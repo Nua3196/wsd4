@@ -38,4 +38,14 @@ export default defineComponent({
 .vue-toast .vue-toast__close {
   color: #fff; /* 닫기 버튼 색상 */
 }
+body {
+  background: url("./assets/images/paul-volkmer-qVotvbsuM_c-unsplash.jpg"); /* 배경 이미지 설정 */
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
 </style>

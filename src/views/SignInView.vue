@@ -373,13 +373,3 @@ export default defineComponent({
   margin-right: 10px; /* 체크박스와 레이블 사이에 10px의 간격 추가 */
 }
 </style>
-
-<style>
-body {
-  background: url("../assets/images/paul-volkmer-qVotvbsuM_c-unsplash.jpg"); /* 배경 이미지 설정 */
-  width: 100%;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-}
-</style>
