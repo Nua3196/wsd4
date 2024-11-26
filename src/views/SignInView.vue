@@ -110,9 +110,17 @@ export default defineComponent({
     toggleView() {
       this.showLogin = !this.showLogin; // showLogin의 값을 반대로 변경하여 로그인/회원가입 화면을 전환함
     },
+    // 이메일 유효성 검사 메소드
+    validateEmail(email: string) {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailPattern.test(email);
+    },
     // 로그인 로직을 처리하는 메소드 (예: API 호출 등)
     handleLogin() {
-      // 사용자가 입력한 데이터를 검증하거나 서버로 보내 로그인 처리
+      if (!this.validateEmail(this.loginID)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
       if (!this.loginID || !this.loginPassword) {
         alert("Please enter both ID and password.");
         return;
@@ -121,6 +129,11 @@ export default defineComponent({
     },
     // 회원가입 로직을 처리하는 메소드 (예: API 호출 등)
     handleRegister() {
+      // 이메일 형식 확인
+      if (!this.validateEmail(this.registerID)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
       // 회원가입 시 약관 동의를 하지 않았다면 경고 메시지 출력
       if (!this.acceptTerms) {
         alert("You must accept the terms and conditions to register.");
