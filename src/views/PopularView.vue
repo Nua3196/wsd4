@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <!-- Home page content will go here -->
+  <div class="popular">
+    <!-- Popular content will go here -->
   </div>
 </template>
 
@@ -8,12 +8,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "HomeView",
+  name: "PopularView",
 });
 </script>
 
 <style lang="scss">
-.home {
+.popular {
   padding: 20px;
 }
 </style>

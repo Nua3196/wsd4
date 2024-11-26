@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <!-- Home page content will go here -->
+  <div class="wishlist">
+    <!-- Wishlist content will go here -->
   </div>
 </template>
 
@@ -8,12 +8,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "HomeView",
+  name: "WishlistView",
 });
 </script>
 
 <style lang="scss">
-.home {
+.wishlist {
   padding: 20px;
 }
 </style>

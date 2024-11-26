@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <!-- Home page content will go here -->
+  <div class="search">
+    <!-- Search page content will go here -->
   </div>
 </template>
 
@@ -8,12 +8,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "HomeView",
+  name: "SearchView",
 });
 </script>
 
 <style lang="scss">
-.home {
+.search {
   padding: 20px;
 }
 </style>

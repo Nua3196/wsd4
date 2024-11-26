@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    <!-- Home page content will go here -->
+  <div class="sign-in">
+    <!-- Sign In page content will go here -->
   </div>
 </template>
 
@@ -8,12 +8,12 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "HomeView",
+  name: "SignInView",
 });
 </script>
 
 <style lang="scss">
-.home {
+.sign-in {
   padding: 20px;
 }
 </style>
