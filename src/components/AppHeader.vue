@@ -67,21 +67,23 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 30px;
+  padding: 10px 40px;
   background-color: #333;
   color: #fff;
   flex-wrap: wrap; /* 화면이 좁아질 때 줄바꿈 허용 */
+  font-size: 1.2rem;
 }
 
 /* 좌측 영역: 로고와 네비게이션 */
 .left {
   display: flex;
   align-items: center;
-  gap: 15px; /* 로고와 메뉴 간격 */
+  gap: 20px; /* 로고와 메뉴 간격 */
 }
 
 .logo {
   cursor: pointer;
+  font-size: 1.5rem;
 }
 
 .nav-menu {
@@ -92,6 +94,7 @@ export default defineComponent({
 .nav-menu a {
   color: #fff;
   text-decoration: none;
+  font-size: 1.1rem;
 }
 
 .user-info {
@@ -99,6 +102,7 @@ export default defineComponent({
   align-items: center;
   gap: 10px;
   margin-left: auto;
+  font-size: 1.1rem;
 }
 
 button {
@@ -112,11 +116,12 @@ button {
 .hamburger-menu {
   display: none; /* 기본적으로 숨김 */
   cursor: pointer;
+  font-size: 1.5rem;
 }
 
 @media (max-width: 768px) {
   .app-header {
-    padding: 10px;
+    padding: 10px 30px;
   }
   .left {
     flex: 1;
@@ -128,6 +133,9 @@ button {
   }
   .nav-menu.active {
     display: flex;
+  }
+  .nav-menu a {
+    font-size: 1rem;
   }
   .user-info {
     justify-content: flex-end;
