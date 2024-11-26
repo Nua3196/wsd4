@@ -87,8 +87,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useToast } from "vue-toast-notification";
 
 export default defineComponent({
+  setup() {
+    const toast = useToast();
+    return { toast };
+  },
   name: "SignInView",
   data() {
     return {
@@ -105,6 +110,16 @@ export default defineComponent({
       acceptTerms: false, // 사용자가 약관에 동의했는지 여부
     };
   },
+  mounted() {
+    // 페이지가 로드될 때 Local Storage에서 로그인 정보를 불러옴
+    const savedID = localStorage.getItem("loginID");
+    const savedPassword = localStorage.getItem("loginPassword");
+    if (savedID && savedPassword) {
+      this.loginID = savedID;
+      this.loginPassword = savedPassword;
+      this.rememberMe = true;
+    }
+  },
   methods: {
     // 로그인 화면과 회원가입 화면을 전환하는 메소드
     toggleView() {
@@ -117,26 +132,44 @@ export default defineComponent({
     },
     // 로그인 로직을 처리하는 메소드 (예: API 호출 등)
     handleLogin() {
+      const storedPassword = localStorage.getItem(this.loginID);
       if (!this.validateEmail(this.loginID)) {
-        alert("Please enter a valid email address.");
+        this.toast.error("Please enter a valid email address.");
         return;
       }
       if (!this.loginID || !this.loginPassword) {
-        alert("Please enter both ID and password.");
+        this.toast.error("Please enter both ID and password.");
         return;
       }
+      if (storedPassword !== this.loginPassword) {
+        this.toast.error("Invalid ID or password.");
+        return;
+      }
+      // 'Remember me' 체크박스를 선택한 경우 Local Storage에 ID와 비밀번호 저장
+      if (this.rememberMe) {
+        localStorage.setItem("loginID", this.loginID);
+        localStorage.setItem("loginPassword", this.loginPassword);
+      } else {
+        localStorage.removeItem("loginID");
+        localStorage.removeItem("loginPassword");
+      }
       // 로그인 처리 로직 추가 (예: API 호출)
+      // 로그인 성공 메시지
+      this.toast.success("Login successful!");
+      localStorage.setItem("loggedIn", "true"); // 로그인 상태 저장
     },
     // 회원가입 로직을 처리하는 메소드 (예: API 호출 등)
     handleRegister() {
       // 이메일 형식 확인
       if (!this.validateEmail(this.registerID)) {
-        alert("Please enter a valid email address.");
+        this.toast.error("Please enter a valid email address.");
         return;
       }
       // 회원가입 시 약관 동의를 하지 않았다면 경고 메시지 출력
       if (!this.acceptTerms) {
-        alert("You must accept the terms and conditions to register.");
+        this.toast.error(
+          "You must accept the terms and conditions to register."
+        );
         return;
       }
       if (
@@ -144,14 +177,18 @@ export default defineComponent({
         !this.registerPassword ||
         !this.registerPasswordConfirm
       ) {
-        alert("Please fill in all fields.");
+        this.toast.error("Please fill in all fields.");
         return;
       }
       if (this.registerPassword !== this.registerPasswordConfirm) {
-        alert("Passwords do not match.");
+        this.toast.error("Passwords do not match.");
         return;
       }
       // 회원가입 처리 로직 추가 (예: API 호출)
+      // 회원가입 정보를 로컬 스토리지에 저장
+      localStorage.setItem(this.registerID, this.registerPassword);
+      this.toast.success("Registration successful! Redirecting to login...");
+      this.toggleView(); // 회원가입 성공 시 로그인 화면으로 전환
     },
   },
 });
