@@ -186,6 +186,8 @@ export default defineComponent({
 .wrapper .login-form,
 .wrapper .register-form {
   position: absolute;
+  top: 0; /* 부모 요소 내에서 가장 위에 위치 */
+  left: 0; /* 부모 요소 내에서 가장 왼쪽에 위치 */
   width: 100%;
   height: 100%;
   padding: 40px 20px;
@@ -193,28 +195,32 @@ export default defineComponent({
   background: rgba(110, 110, 110, 0.445); /* 반투명한 보라색 배경 */
   color: #000000;
   border-radius: 10px; /* 둥근 모서리 설정 */
-  transition: all 0.5s ease-in-out; /* 모든 스타일 변화에 트랜지션 적용 */
+  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
   backface-visibility: hidden; /* 회전 시 뒷면 숨기기 */
   border: 1px solid #ffffff15; /* 테두리 설정 */
 }
 
-/* 로그인 폼의 초기 상태 설정 */
+/* 로그인 폼의 초기 상태: 기본적으로 보이도록 설정 */
 .wrapper .login-form {
-  transform: rotateY(0); /* 로그인 폼이 기본적으로 보이도록 설정 */
+  transform: rotateY(0);
+  opacity: 1;
 }
 
-/* 회원가입 폼의 초기 상태 설정 */
+/* 회원가입 폼의 초기 상태: 보이지 않도록 회전한 상태로 설정 */
 .wrapper .register-form {
-  transform: rotateY(90deg); /* 회원가입 폼을 기본적으로 숨김 */
+  transform: rotateY(-180deg);
+  opacity: 0;
 }
 
 /* flip 클래스가 적용되었을 때 로그인 폼과 회원가입 폼의 상태 설정 */
 .wrapper.flip .login-form {
-  transform: rotateY(-90deg); /* 로그인 폼 숨기기 */
+  transform: rotateY(180deg);
+  opacity: 0; /* 회전하며 사라짐 */
 }
 
 .wrapper.flip .register-form {
-  transform: rotateY(0); /* 회원가입 폼 보이기 */
+  transform: rotateY(0);
+  opacity: 1; /* 회전하며 나타남 */
 }
 
 /* 폼 제목 스타일 설정 */
