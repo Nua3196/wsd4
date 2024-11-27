@@ -30,17 +30,8 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    // Vuex에서 찜한 영화 ID 가져오기
-    const wishlist = computed(() => store.getters.getWishlist);
-
-    // Local Storage에서 영화 데이터를 가져와 찜한 영화 필터링
-    const wishlistMovies = computed<Movie[]>(() => {
-      const storedMovies = localStorage.getItem("movies");
-      const allMovies = storedMovies ? JSON.parse(storedMovies) : [];
-      return allMovies.filter((movie: Movie) =>
-        wishlist.value.includes(movie.id)
-      );
-    });
+    // Vuex에서 찜한 영화 목록 가져오기
+    const wishlistMovies = computed<Movie[]>(() => store.getters.getWishlist);
 
     return { wishlistMovies };
   },
@@ -50,6 +41,9 @@ export default defineComponent({
 <style scoped>
 .wishlist {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 전체 콘텐츠를 수직 중앙 정렬 */
 }
 
 .title {
@@ -66,8 +60,17 @@ export default defineComponent({
 }
 
 .movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  display: flex; /* Flexbox 사용 */
+  flex-wrap: wrap; /* 여러 줄로 영화 정렬 */
+  gap: 40px; /* 카드 간격 */
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+  max-width: 1200px; /* 최대 너비 제한 */
+  margin: auto; /* 페이지 중앙 정렬 */
+}
+
+.movie-grid > * {
+  flex: 1 0 200px; /* 아이템이 200px 고정 크기를 유지 */
+  max-width: 200px; /* 카드 크기 제한 */
 }
 </style>
