@@ -8,10 +8,10 @@
         <i class="fa-solid fa-bars"></i>
       </div>
       <nav class="nav-menu" :class="{ active: menuActive }">
-        <router-link to="/">Home</router-link>
-        <router-link to="/popular">Popular</router-link>
-        <router-link to="/search">Search</router-link>
-        <router-link to="/wishlist">Wishlist</router-link>
+        <router-link to="/">홈</router-link>
+        <router-link to="/popular">대세 영화</router-link>
+        <router-link to="/search">탐색하기</router-link>
+        <router-link to="/wishlist">찜 목록</router-link>
       </nav>
     </div>
     <div class="user-info" v-if="loggedIn">
