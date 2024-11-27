@@ -31,16 +31,25 @@ export default defineComponent({
     const isScrolled = ref(false);
 
     const handleScroll = () => {
-      isScrolled.value = window.scrollY > 0; // 스크롤 위치에 따라 상태 업데이트
+      const mainContent = document.querySelector(".main-content");
+      if (mainContent) {
+        isScrolled.value = mainContent.scrollTop > 0;
+      }
     };
 
     // 스크롤 이벤트 등록 및 해제
     onMounted(() => {
-      window.addEventListener("scroll", handleScroll);
+      const mainContent = document.querySelector(".main-content");
+      if (mainContent) {
+        mainContent.addEventListener("scroll", handleScroll);
+      }
     });
 
     onBeforeUnmount(() => {
-      window.removeEventListener("scroll", handleScroll);
+      const mainContent = document.querySelector(".main-content");
+      if (mainContent) {
+        mainContent.removeEventListener("scroll", handleScroll);
+      }
     });
 
     return { isSignInPage, isScrolled };

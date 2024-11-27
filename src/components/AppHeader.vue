@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -69,8 +69,8 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 40px;
-  background-color: #333;
+  padding: 20px 40px;
+  background-color: #2b2b2b;
   color: #fff;
   flex-wrap: wrap; /* 화면이 좁아질 때 줄바꿈 허용 */
   font-size: 1.2rem;
@@ -83,7 +83,7 @@ export default defineComponent({
 }
 
 .app-header.scrolled {
-  background-color: #555; /* 스크롤 시 연한 색상 */
+  background-color: #2b2b2ba5; /* 스크롤 시 연한 색상 */
 }
 
 /* 좌측 영역: 로고와 네비게이션 */
