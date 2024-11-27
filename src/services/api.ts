@@ -97,12 +97,18 @@ export const fetchMoviesByFilters = async (filters: {
 };
 
 export const fetchMoviesByCategory = async (
-  category: string
+  category: string,
+  page: number = 1 // 페이지 매개변수 추가, 기본값 1
 ): Promise<Movie[]> => {
   try {
     const response = await apiClient.get<{ results: any[] }>(
       `/movie/${category}`,
-      { params: { language: "ko-KR" } }
+      {
+        params: {
+          language: "ko-KR",
+          page, // 페이지 번호를 API 요청에 포함
+        },
+      }
     );
     return response.data.results.map(
       (movie): Movie => ({
