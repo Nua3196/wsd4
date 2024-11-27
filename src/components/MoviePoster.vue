@@ -1,11 +1,11 @@
 <template>
   <div class="movie-card" @mouseover="hover = true" @mouseleave="hover = false">
-    <img :src="movie.posterPath" :alt="movie.title" class="poster" />
+    <img :src="movie.backdrop_path" :alt="movie.title" class="poster" />
     <!-- 마우스 호버 시 추가 정보 표시 -->
     <div class="info" v-if="hover">
       <h3 class="title">{{ movie.title }}</h3>
-      <p class="description">{{ movie.description }}</p>
-      <p class="release-date">Release Date: {{ movie.releaseDate }}</p>
+      <p class="description">{{ movie.overview }}</p>
+      <p class="release-date">Release Date: {{ movie.release_date }}</p>
       <div class="genres">
         <span v-for="(genre, index) in movie.genres" :key="index" class="genre">
           {{ genre }}
@@ -24,9 +24,9 @@ export default defineComponent({
     movie: {
       type: Object as () => {
         title: string;
-        posterPath: string;
-        description: string;
-        releaseDate: string;
+        backdrop_path: string;
+        overview: string;
+        release_date: string;
         genres: string[];
       },
       required: true,
@@ -47,9 +47,7 @@ export default defineComponent({
   overflow: hidden;
   border-radius: 10px;
   cursor: pointer;
-  transition:
-    transform 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .movie-card:hover {

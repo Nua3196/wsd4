@@ -1,5 +1,5 @@
 export interface Movie {
-  id: string;
+  id: number;
   title: string;
   overview: string;
   release_date: string; // TMDB API에서 사용하는 필드명

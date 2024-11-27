@@ -62,7 +62,8 @@ export default defineComponent({
 
 <style scoped>
 .home {
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   display: flex;
   flex-direction: column;
   gap: 40px;
