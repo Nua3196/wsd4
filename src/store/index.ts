@@ -5,7 +5,7 @@ export default createStore({
     loggedIn: false, // 로그인 상태
     userID: "", // 사용자 ID
     apiKey: "", // TMDB API 키
-    wishlist: [] as number[], // 찜한 영화 ID 목록
+    wishlist: [] as Array<{ id: number; title: string; backdrop_path: string }>, // 찜한 영화 객체 배열
   },
   mutations: {
     // 로그인 상태와 사용자 정보 설정
@@ -24,11 +24,13 @@ export default createStore({
       state.loggedIn = false;
       state.userID = "";
       state.apiKey = "";
+      state.wishlist = [];
 
       // 로컬 스토리지에서 제거
       localStorage.removeItem("loggedIn");
       localStorage.removeItem("userID");
       localStorage.removeItem("apiKey");
+      localStorage.removeItem("wishlist");
     },
     // 초기 상태 설정 (로컬 스토리지에서 로드)
     initializeState(state) {
@@ -42,15 +44,15 @@ export default createStore({
       state.wishlist = storedWishlist ? JSON.parse(storedWishlist) : [];
     },
     // Wishlist에 영화 추가
-    addToWishlist(state, movieId: number) {
-      if (!state.wishlist.includes(movieId)) {
-        state.wishlist.push(movieId);
+    addToWishlist(state, movie) {
+      if (!state.wishlist.some((item) => item.id === movie.id)) {
+        state.wishlist.push(movie);
         localStorage.setItem("wishlist", JSON.stringify(state.wishlist));
       }
     },
     // Wishlist에서 영화 제거
     removeFromWishlist(state, movieId: number) {
-      state.wishlist = state.wishlist.filter((id) => id !== movieId);
+      state.wishlist = state.wishlist.filter((movie) => movie.id !== movieId);
       localStorage.setItem("wishlist", JSON.stringify(state.wishlist));
     },
   },
@@ -64,8 +66,8 @@ export default createStore({
       commit("logout");
     },
     // Wishlist 영화 추가
-    addMovieToWishlist({ commit }, movieId: number) {
-      commit("addToWishlist", movieId);
+    addMovieToWishlist({ commit }, movie) {
+      commit("addToWishlist", movie);
     },
     // Wishlist 영화 제거
     removeMovieFromWishlist({ commit }, movieId: number) {

@@ -10,12 +10,6 @@
     <div class="info" v-if="hover">
       <h3 class="title">{{ movie.title }}</h3>
       <p class="description">{{ truncatedOverview }}</p>
-      <!-- <p class="release-date">Release Date: {{ movie.release_date }}</p>
-      <div class="genres">
-        <span v-for="(genre, index) in movie.genres" :key="index" class="genre">
-          {{ genre }}
-        </span>
-      </div> -->
     </div>
     <!-- 찜 여부 표시 -->
     <div class="wishlist-indicator" v-if="isInWishlist">❤️</div>
@@ -25,19 +19,13 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { useStore } from "vuex";
+import { Movie } from "@/types/movie";
 
 export default defineComponent({
   name: "MoviePoster",
   props: {
     movie: {
-      type: Object as () => {
-        id: number;
-        title: string;
-        backdrop_path: string;
-        overview: string;
-        release_date: string;
-        genres: string[];
-      },
+      type: Object as () => Movie,
       required: true,
     },
   },
@@ -47,15 +35,17 @@ export default defineComponent({
 
     // Wishlist에 있는지 확인
     const isInWishlist = computed(() =>
-      store.getters.getWishlist.includes(props.movie.id)
+      store.getters.getWishlist.some(
+        (item: Movie) => item.id === props.movie.id
+      )
     );
 
     // Wishlist 추가/제거 토글
     const toggleWishlist = () => {
       if (isInWishlist.value) {
-        store.dispatch("removeMovieFromWishlist", props.movie.id);
+        store.dispatch("removeMovieFromWishlist", props.movie.id); // 영화 ID로 제거
       } else {
-        store.dispatch("addMovieToWishlist", props.movie.id);
+        store.dispatch("addMovieToWishlist", props.movie); // 영화 객체로 추가
       }
     };
 
@@ -84,29 +74,23 @@ export default defineComponent({
 }
 
 .movie-card:hover {
-  transform: scale(1.1); /* 확대 효과 */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+  transform: scale(1.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* 찜 상태를 나타내는 하트 아이콘 스타일 */
 .wishlist-indicator {
-  position: absolute; /* 부모 요소(movie-card) 기준으로 배치 */
-  top: 5px; /* 카드의 상단에서 10px 아래 */
-  right: 5px; /* 카드의 오른쪽에서 10px 안쪽 */
-  font-size: 1.7rem; /* 적당한 크기의 하트 아이콘 */
-  z-index: 10; /* 다른 요소 위에 표시되도록 우선순위 설정 */
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 1.7rem;
+  z-index: 10;
   cursor: pointer;
-}
-
-/* 호버 시 하트 강조 */
-.wishlist-indicator:hover {
-  top: 1px;
 }
 
 .poster {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 포스터가 영역을 가득 채우도록 */
+  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -115,7 +99,7 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* 반투명 배경 */
+  background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
   padding: 10px;
   box-sizing: border-box;
@@ -124,7 +108,7 @@ export default defineComponent({
 }
 
 .movie-card:hover .info {
-  transform: translateY(0); /* 호버 시 정보 표시 */
+  transform: translateY(0);
 }
 
 .title {
@@ -136,24 +120,5 @@ export default defineComponent({
 .description {
   font-size: 0.9em;
   margin-bottom: 10px;
-}
-
-.release-date {
-  font-size: 0.8em;
-  margin-bottom: 5px;
-}
-
-.genres {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.genre {
-  background-color: #f1f1f1;
-  color: #333;
-  padding: 2px 5px;
-  border-radius: 5px;
-  font-size: 0.7em;
 }
 </style>
