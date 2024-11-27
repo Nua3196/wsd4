@@ -275,9 +275,7 @@ export default defineComponent({
   background: rgba(110, 110, 110, 0.445); /* 반투명한 보라색 배경 */
   color: #000000;
   border-radius: 10px; /* 둥근 모서리 설정 */
-  /* transition:
-    transform 0.6s ease-in-out,
-    opacity 0.6s ease-in-out; */
+  transition: transform 1s ease-in-out, opacity 0.6s ease-in-out;
   backface-visibility: hidden; /* 회전 시 뒷면 숨기기 */
   border: 1px solid #ffffff15; /* 테두리 설정 */
 }
@@ -290,7 +288,7 @@ export default defineComponent({
 
 /* 회원가입 폼의 초기 상태: 보이지 않도록 회전한 상태로 설정 */
 .wrapper .register-form {
-  transform: rotateY(-180deg);
+  transform: rotateY(180deg);
   opacity: 0;
 }
 

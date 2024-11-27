@@ -41,6 +41,30 @@ export const fetchMovieDetails = async (movieId: number): Promise<Movie> => {
   }
 };
 
+// 추가: 필터링 조건에 맞는 영화 목록 가져오기
+export const fetchMoviesByFilters = async (filters: {
+  with_genres?: string;
+  "vote_average.gte"?: number;
+  with_original_language?: string;
+  page?: number;
+}): Promise<Movie[]> => {
+  try {
+    const response = await apiClient.get<{ results: Movie[] }>(
+      "/discover/movie",
+      {
+        params: {
+          language: "ko-KR",
+          ...filters, // 필터링 조건 추가
+        },
+      }
+    );
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching movies with filters:", error);
+    throw error;
+  }
+};
+
 export const fetchMoviesByCategory = async (
   category: string
 ): Promise<Movie[]> => {
