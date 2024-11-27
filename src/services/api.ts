@@ -55,6 +55,23 @@ const processMovieData = (movie: any): Movie => {
   };
 };
 
+// 장르 목록 가져오기
+export const fetchGenres = async (): Promise<
+  { id: number; name: string }[]
+> => {
+  try {
+    const response = await apiClient.get<{
+      genres: { id: number; name: string }[];
+    }>("/genre/movie/list", {
+      params: { language: "ko-KR" },
+    });
+    return response.data.genres;
+  } catch (error) {
+    console.error("Error fetching genres:", error);
+    throw error;
+  }
+};
+
 // 추가: 필터링 조건에 맞는 영화 목록 가져오기
 export const fetchMoviesByFilters = async (filters: {
   with_genres?: string;

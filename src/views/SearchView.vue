@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { fetchMoviesByFilters } from "@/services/api";
+import { fetchMoviesByFilters, fetchGenres } from "@/services/api";
 import MoviePoster from "@/components/MoviePoster.vue";
 
 export default defineComponent({
@@ -59,6 +59,15 @@ export default defineComponent({
     const selectedRating = ref<string>("");
     const selectedLanguage = ref<string>("");
     const observer = ref<HTMLElement | null>(null);
+
+    // 장르 목록 로드
+    const loadGenres = async () => {
+      try {
+        genres.value = await fetchGenres();
+      } catch (error) {
+        console.error("Error loading genres:", error);
+      }
+    };
 
     // 영화 목록 가져오기
     const fetchMovies = async () => {
@@ -94,6 +103,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
+      loadGenres();
       fetchMovies();
       createObserver();
     });
