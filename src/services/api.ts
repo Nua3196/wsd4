@@ -40,3 +40,26 @@ export const fetchMovieDetails = async (movieId: number): Promise<Movie> => {
     throw error;
   }
 };
+
+export const fetchMoviesByCategory = async (
+  category: string
+): Promise<Movie[]> => {
+  try {
+    const response = await apiClient.get<{ results: any[] }>(
+      `/movie/${category}`
+    );
+    return response.data.results.map(
+      (movie): Movie => ({
+        id: movie.id,
+        title: movie.title,
+        backdrop_path: `https://image.tmdb.org/t/p/w200${movie.poster_path}`,
+        overview: movie.overview,
+        release_date: movie.release_date,
+        genres: movie.genre_ids || [], // 장르 ID 배열을 직접 처리하거나 변환 가능
+      })
+    );
+  } catch (error) {
+    console.error(`Error fetching ${category} movies:`, error);
+    return [];
+  }
+};

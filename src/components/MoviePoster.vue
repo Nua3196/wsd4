@@ -47,7 +47,9 @@ export default defineComponent({
   overflow: hidden;
   border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 }
 
 .movie-card:hover {
