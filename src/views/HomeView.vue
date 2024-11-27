@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <MainBanner />
     <div class="movies">
       <MoviePoster
         v-for="(movie, index) in movies"
@@ -13,10 +14,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MoviePoster from "@/components/MoviePoster.vue";
+import MainBanner from "@/components/MainBanner.vue";
 
 export default defineComponent({
   name: "HomeView",
   components: {
+    MainBanner,
     MoviePoster,
   },
   data() {
