@@ -3,13 +3,13 @@
     <!-- View 선택 버튼 -->
     <div class="view-toggle">
       <button :class="{ active: isTableView }" @click="setViewMode('table')">
-        Table View
+        <i class="fa-solid fa-grip"></i>
       </button>
       <button
         :class="{ active: !isTableView }"
         @click="setViewMode('infinite')"
       >
-        Infinite Scroll
+        <i class="fa-solid fa-angles-down"></i>
       </button>
     </div>
 
@@ -48,8 +48,9 @@ export default defineComponent({
 
 .view-toggle {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   margin-bottom: 20px;
+  padding-right: 30px;
 }
 
 .view-toggle button {

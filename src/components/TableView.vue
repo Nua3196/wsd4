@@ -1,30 +1,30 @@
 <template>
-    <div class="table-view">
-      <div class="movie-grid">
-        <MoviePoster
-          v-for="movie in movies"
-          :key="movie.id"
-          :movie="movie"
-          class="table-item"
-        />
-      </div>
-      <!-- 페이지네이션 -->
-      <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <div class="page-numbers">
-          <span
-            v-for="page in totalPages"
-            :key="page"
-            @click="goToPage(page)"
-            :class="{ active: currentPage === page }"
-          >
-            {{ page }}
-          </span>
-        </div>
-        <button @click="nextPage" :disabled="!hasMorePages">다음</button>
-      </div>
+  <div class="table-view">
+    <div class="movie-grid">
+      <MoviePoster
+        v-for="movie in movies"
+        :key="movie.id"
+        :movie="movie"
+        class="table-item"
+      />
     </div>
-  </template>  
+    <!-- 페이지네이션 -->
+    <div class="pagination">
+      <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+      <div class="page-numbers">
+        <span
+          v-for="page in totalPages"
+          :key="page"
+          @click="goToPage(page)"
+          :class="{ active: currentPage === page }"
+        >
+          {{ page }}
+        </span>
+      </div>
+      <button @click="nextPage" :disabled="!hasMorePages">다음</button>
+    </div>
+  </div>
+</template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
