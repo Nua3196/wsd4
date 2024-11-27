@@ -138,7 +138,6 @@ export default defineComponent({
 /* Search 페이지 전체 레이아웃 */
 .search {
   padding: 20px;
-  background-color: #181818; /* 어두운 배경 */
   color: #fff;
   text-align: center;
 }

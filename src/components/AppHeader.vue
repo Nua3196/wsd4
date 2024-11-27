@@ -1,5 +1,5 @@
 <template>
-  <header class="app-header">
+  <header :class="['app-header', { scrolled: isScrolled }]">
     <div class="left">
       <div class="logo" @click="$router.push('/')">
         <i class="fa-solid fa-film" style="color: #cc0000"></i>
@@ -18,58 +18,40 @@
       <i class="fa-solid fa-user"></i>
       <span>{{ userID }}</span>
       <i class="fa-solid fa-arrow-right-from-bracket" @click="handleLogout"></i>
-      <!-- <button @click="handleLogout">Logout</button> -->
     </div>
   </header>
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  ref,
-} from "vue";
+import { defineComponent, computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "AppHeader",
-  setup() {
+  props: {
+    isScrolled: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  setup(props) {
     const store = useStore();
     const router = useRouter();
 
-    // Vuex 상태와 getters
     const userID = computed(() => store.getters.getUserID);
     const loggedIn = computed(() => store.getters.isLoggedIn);
 
-    // 지역 상태 관리
     const menuActive = ref(false);
 
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        menuActive.value = false; // 큰 화면에서는 메뉴 숨김
-      }
-    };
-
     const handleLogout = () => {
-      store.dispatch("logout"); // Vuex 상태 초기화
-      router.push("/signin"); // 라우팅 처리
+      store.dispatch("logout");
+      router.push("/signin");
     };
 
     const toggleMenu = () => {
       menuActive.value = !menuActive.value;
     };
-
-    // Lifecycle hooks
-    onMounted(() => {
-      window.addEventListener("resize", handleResize);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener("resize", handleResize);
-    });
 
     return {
       userID,
@@ -92,6 +74,16 @@ export default defineComponent({
   color: #fff;
   flex-wrap: wrap; /* 화면이 좁아질 때 줄바꿈 허용 */
   font-size: 1.2rem;
+  position: fixed; /* 화면 상단에 고정 */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: background-color 0.3s ease; /* 색상 변경 애니메이션 */
+}
+
+.app-header.scrolled {
+  background-color: #555; /* 스크롤 시 연한 색상 */
 }
 
 /* 좌측 영역: 로고와 네비게이션 */

@@ -1,5 +1,6 @@
 <template>
   <div class="popular">
+    <h1 id="title" style="color: white">대세 영화</h1>
     <!-- View 선택 버튼 -->
     <div class="view-toggle">
       <button :class="{ active: isTableView }" @click="setViewMode('table')">
@@ -68,5 +69,9 @@ export default defineComponent({
   background-color: #333;
   color: #fff;
   border-color: #333;
+}
+
+#title {
+  text-align: center;
 }
 </style>
