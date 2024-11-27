@@ -4,19 +4,19 @@
     <!-- 마우스 호버 시 추가 정보 표시 -->
     <div class="info" v-if="hover">
       <h3 class="title">{{ movie.title }}</h3>
-      <p class="description">{{ movie.overview }}</p>
-      <p class="release-date">Release Date: {{ movie.release_date }}</p>
+      <p class="description">{{ truncatedOverview }}</p>
+      <!-- <p class="release-date">Release Date: {{ movie.release_date }}</p>
       <div class="genres">
         <span v-for="(genre, index) in movie.genres" :key="index" class="genre">
           {{ genre }}
         </span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 
 export default defineComponent({
   name: "MoviePoster",
@@ -32,9 +32,18 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const hover = ref(false); // 호버 상태 관리
-    return { hover };
+
+    // 영화 설명을 일정 길이까지만 표시하고 초과 시 ... 처리
+    const maxLength = 50; // 최대 표시 길이
+    const truncatedOverview = computed(() => {
+      return props.movie.overview.length > maxLength
+        ? props.movie.overview.slice(0, maxLength) + "..."
+        : props.movie.overview;
+    });
+
+    return { hover, truncatedOverview };
   },
 });
 </script>
@@ -44,7 +53,7 @@ export default defineComponent({
   position: relative;
   width: 200px;
   height: 300px;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
