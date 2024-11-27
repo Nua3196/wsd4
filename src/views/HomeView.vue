@@ -41,7 +41,7 @@ export default defineComponent({
 
 <style scoped>
 .home {
-  padding: 20px;
+  padding: 0px;
 }
 
 .movies {

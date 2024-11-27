@@ -8,16 +8,19 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
   params: {
-    api_key: "YOUR_TMDB_API_KEY",
+    api_key: "93d34e3b710d13328bf66490b7a38cfe",
   },
 });
 
 // 현재 상영 중인 영화 목록 가져오기
 export const fetchNowPlayingMovies = async (): Promise<Movie[]> => {
   try {
-    const response = await apiClient.get<{ results: Movie[] }>("/movie/now_playing", {
-      params: { language: "ko-KR", page: 1 },
-    });
+    const response = await apiClient.get<{ results: Movie[] }>(
+      "/movie/now_playing",
+      {
+        params: { language: "ko-KR", page: 1 },
+      }
+    );
     return response.data.results; // 영화 리스트 반환
   } catch (error) {
     console.error("Error fetching now playing movies:", error);
