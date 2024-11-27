@@ -24,40 +24,60 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {
+  defineComponent,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  ref,
+} from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "AppHeader",
-  data() {
-    return {
-      loggedIn: false,
-      userID: "",
-      menuActive: false,
-    };
-  },
-  mounted() {
-    // 로그인 상태 확인 및 사용자 ID 로드
-    this.loggedIn = localStorage.getItem("loggedIn") === "true";
-    this.userID = localStorage.getItem("userID") || "";
-    window.addEventListener("resize", this.handleResize);
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.handleResize);
-  },
-  methods: {
-    handleResize() {
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+
+    // Vuex 상태와 getters
+    const userID = computed(() => store.getters.getUserID);
+    const loggedIn = computed(() => store.getters.isLoggedIn);
+
+    // 지역 상태 관리
+    const menuActive = ref(false);
+
+    const handleResize = () => {
       if (window.innerWidth > 768) {
-        this.menuActive = false; // 큰 화면에서는 메뉴 항상 표시
+        menuActive.value = false; // 큰 화면에서는 메뉴 숨김
       }
-    },
-    handleLogout() {
-      localStorage.removeItem("loggedIn");
-      localStorage.removeItem("userID");
-      this.$router.push("/signin");
-    },
-    toggleMenu() {
-      this.menuActive = !this.menuActive;
-    },
+    };
+
+    const handleLogout = () => {
+      store.dispatch("logout"); // Vuex 상태 초기화
+      router.push("/signin"); // 라우팅 처리
+    };
+
+    const toggleMenu = () => {
+      menuActive.value = !menuActive.value;
+    };
+
+    // Lifecycle hooks
+    onMounted(() => {
+      window.addEventListener("resize", handleResize);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener("resize", handleResize);
+    });
+
+    return {
+      userID,
+      loggedIn,
+      menuActive,
+      handleLogout,
+      toggleMenu,
+    };
   },
 });
 </script>

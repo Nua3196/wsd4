@@ -86,111 +86,140 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useToast } from "vue-toast-notification";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-  setup() {
-    const toast = useToast();
-    return { toast };
-  },
   name: "SignInView",
-  data() {
-    return {
-      // 로그인 화면을 보여줄지, 회원가입 화면을 보여줄지 결정하는 상태 변수
-      showLogin: true,
-      // 로그인 관련 데이터
-      loginID: "", // 사용자가 입력한 ID
-      loginPassword: "", // 사용자가 입력한 비밀번호
-      rememberMe: false, // 사용자가 'Remember me'를 선택했는지 여부
-      // 회원가입 관련 데이터
-      registerID: "", // 회원가입용 ID
-      registerPassword: "", // 회원가입용 비밀번호
-      registerPasswordConfirm: "", // 비밀번호 확인
-      acceptTerms: false, // 사용자가 약관에 동의했는지 여부
+  setup() {
+    // 플러그인 및 유틸리티 초기화
+    const toast = useToast();
+    const store = useStore();
+    const router = useRouter();
+
+    // 상태 관리
+    const showLogin = ref(true);
+    const loginID = ref("");
+    const loginPassword = ref("");
+    const rememberMe = ref(false);
+    const registerID = ref("");
+    const registerPassword = ref("");
+    const registerPasswordConfirm = ref("");
+    const acceptTerms = ref(false);
+
+    // 컴포넌트가 마운트될 때 로컬 스토리지에서 로그인 정보 로드
+    const initializeLoginData = () => {
+      const savedID = localStorage.getItem("loginID");
+      const savedPassword = localStorage.getItem("loginPassword");
+      if (savedID && savedPassword) {
+        loginID.value = savedID;
+        loginPassword.value = savedPassword;
+        rememberMe.value = true;
+      }
     };
-  },
-  mounted() {
-    // 페이지가 로드될 때 Local Storage에서 로그인 정보를 불러옴
-    const savedID = localStorage.getItem("loginID");
-    const savedPassword = localStorage.getItem("loginPassword");
-    if (savedID && savedPassword) {
-      this.loginID = savedID;
-      this.loginPassword = savedPassword;
-      this.rememberMe = true;
-    }
-  },
-  methods: {
-    // 로그인 화면과 회원가입 화면을 전환하는 메소드
-    toggleView() {
-      this.showLogin = !this.showLogin; // showLogin의 값을 반대로 변경하여 로그인/회원가입 화면을 전환함
-    },
-    // 이메일 유효성 검사 메소드
-    validateEmail(email: string) {
+
+    // 이메일 유효성 검사
+    const validateEmail = (email: string) => {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       return emailPattern.test(email);
-    },
-    // 로그인 로직을 처리하는 메소드 (예: API 호출 등)
-    handleLogin() {
-      const storedPassword = localStorage.getItem(this.loginID);
-      if (!this.validateEmail(this.loginID)) {
-        this.toast.error("Please enter a valid email address.");
+    };
+
+    // 로그인 로직
+    const handleLogin = async () => {
+      if (!validateEmail(loginID.value)) {
+        toast.error("Please enter a valid email address.");
         return;
       }
-      if (!this.loginID || !this.loginPassword) {
-        this.toast.error("Please enter both ID and password.");
+      if (!loginID.value || !loginPassword.value) {
+        toast.error("Please enter both ID and password.");
         return;
       }
-      if (storedPassword !== this.loginPassword) {
-        this.toast.error("Invalid ID or password.");
+
+      const storedPassword = localStorage.getItem(loginID.value);
+      if (storedPassword !== loginPassword.value) {
+        toast.error("Invalid ID or password.");
         return;
       }
-      // 'Remember me' 체크박스를 선택한 경우 Local Storage에 ID와 비밀번호 저장
-      if (this.rememberMe) {
-        localStorage.setItem("loginID", this.loginID);
-        localStorage.setItem("loginPassword", this.loginPassword);
+
+      // 'Remember me' 체크박스 선택 시 로컬 스토리지에 저장
+      if (rememberMe.value) {
+        localStorage.setItem("loginID", loginID.value);
+        localStorage.setItem("loginPassword", loginPassword.value);
       } else {
         localStorage.removeItem("loginID");
         localStorage.removeItem("loginPassword");
       }
-      // 로그인 처리 로직 추가 (예: API 호출)
-      // 로그인 성공 메시지
-      this.toast.success("Login successful!");
-      localStorage.setItem("loggedIn", "true"); // 로그인 상태 저장
-      this.$router.push("/");
-    },
-    // 회원가입 로직을 처리하는 메소드 (예: API 호출 등)
-    handleRegister() {
-      // 이메일 형식 확인
-      if (!this.validateEmail(this.registerID)) {
-        this.toast.error("Please enter a valid email address.");
+
+      // Vuex에 로그인 정보 저장
+      try {
+        await store.dispatch("login", {
+          userID: loginID.value,
+          apiKey: loginPassword.value,
+        });
+        toast.success("Login successful!");
+        router.push("/"); // 로그인 성공 시 홈으로 이동
+      } catch (error) {
+        toast.error("An error occurred during login.");
+      }
+    };
+
+    // 회원가입 로직
+    const handleRegister = () => {
+      if (!validateEmail(registerID.value)) {
+        toast.error("Please enter a valid email address.");
         return;
       }
-      // 회원가입 시 약관 동의를 하지 않았다면 경고 메시지 출력
-      if (!this.acceptTerms) {
-        this.toast.error(
-          "You must accept the terms and conditions to register."
-        );
+      if (!acceptTerms.value) {
+        toast.error("You must accept the terms and conditions to register.");
         return;
       }
       if (
-        !this.registerID ||
-        !this.registerPassword ||
-        !this.registerPasswordConfirm
+        !registerID.value ||
+        !registerPassword.value ||
+        !registerPasswordConfirm.value
       ) {
-        this.toast.error("Please fill in all fields.");
+        toast.error("Please fill in all fields.");
         return;
       }
-      if (this.registerPassword !== this.registerPasswordConfirm) {
-        this.toast.error("Passwords do not match.");
+      if (registerPassword.value !== registerPasswordConfirm.value) {
+        toast.error("Passwords do not match.");
         return;
       }
-      // 회원가입 처리 로직 추가 (예: API 호출)
-      // 회원가입 정보를 로컬 스토리지에 저장
-      localStorage.setItem(this.registerID, this.registerPassword);
-      this.toast.success("Registration successful! Redirecting to login...");
-      this.toggleView(); // 회원가입 성공 시 로그인 화면으로 전환
-    },
+
+      // 로컬 스토리지에 회원가입 데이터 저장
+      if (localStorage.getItem(registerID.value)) {
+        toast.error("This ID is already registered.");
+        return;
+      }
+
+      localStorage.setItem(registerID.value, registerPassword.value);
+      toast.success("Registration successful! Redirecting to login...");
+      showLogin.value = true; // 회원가입 성공 후 로그인 화면으로 전환
+    };
+
+    // 로그인/회원가입 화면 전환
+    const toggleView = () => {
+      showLogin.value = !showLogin.value;
+    };
+
+    // 컴포넌트 로드 시 초기화
+    initializeLoginData();
+
+    return {
+      showLogin,
+      loginID,
+      loginPassword,
+      rememberMe,
+      registerID,
+      registerPassword,
+      registerPasswordConfirm,
+      acceptTerms,
+      handleLogin,
+      handleRegister,
+      toggleView,
+    };
   },
 });
 </script>
@@ -246,7 +275,9 @@ export default defineComponent({
   background: rgba(110, 110, 110, 0.445); /* 반투명한 보라색 배경 */
   color: #000000;
   border-radius: 10px; /* 둥근 모서리 설정 */
-  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+  /* transition:
+    transform 0.6s ease-in-out,
+    opacity 0.6s ease-in-out; */
   backface-visibility: hidden; /* 회전 시 뒷면 숨기기 */
   border: 1px solid #ffffff15; /* 테두리 설정 */
 }

@@ -10,6 +10,7 @@
 import { defineComponent, computed } from "vue";
 import AppHeader from "@/components/AppHeader.vue"; // 헤더 컴포넌트 임포트
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "App",
