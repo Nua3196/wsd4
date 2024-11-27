@@ -157,6 +157,7 @@ export default defineComponent({
       // 로그인 성공 메시지
       this.toast.success("Login successful!");
       localStorage.setItem("loggedIn", "true"); // 로그인 상태 저장
+      this.$router.push("/");
     },
     // 회원가입 로직을 처리하는 메소드 (예: API 호출 등)
     handleRegister() {
