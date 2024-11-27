@@ -98,7 +98,7 @@ export const fetchMoviesByFilters = async (filters: {
 
 export const fetchMoviesByCategory = async (
   category: string,
-  page: number = 1 // 페이지 매개변수 추가, 기본값 1
+  page = 1 // 페이지 매개변수 추가, 기본값 1
 ): Promise<Movie[]> => {
   try {
     const response = await apiClient.get<{ results: any[] }>(
