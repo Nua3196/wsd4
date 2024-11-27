@@ -18,8 +18,9 @@
           평점:
           <select v-model="selectedRating" @change="resetMovies">
             <option value="">전체</option>
-            <option value="8">8점 이상</option>
-            <option value="7">7점 이상</option>
+            <option value="9">9점 이상</option>
+            <option value="5">5점 이상</option>
+            <option value="1">1점 이상</option>
           </select>
         </label>
         <label>
@@ -30,6 +31,8 @@
             <option value="en">영어</option>
           </select>
         </label>
+        <!-- 초기화 버튼 -->
+        <button @click="resetFilters" class="reset-button">초기화</button>
       </div>
     </div>
 
@@ -90,6 +93,14 @@ export default defineComponent({
       fetchMovies();
     };
 
+    // 필터링 조건 초기화
+    const resetFilters = () => {
+      selectedGenre.value = "";
+      selectedRating.value = "";
+      selectedLanguage.value = "";
+      resetMovies(); // 초기화 후 영화 다시 로드
+    };
+
     // 무한 스크롤 관찰자 생성
     const createObserver = () => {
       if (!observer.value) return;
@@ -114,6 +125,7 @@ export default defineComponent({
       selectedGenre,
       selectedRating,
       selectedLanguage,
+      resetFilters,
       observer,
       fetchMovies,
       resetMovies,
@@ -160,10 +172,29 @@ export default defineComponent({
   font-size: 1rem;
   margin-top: 5px;
   cursor: pointer;
+  height: 40px;
 }
 
 .filters select:hover {
   background-color: #444;
+}
+
+/* 초기화 버튼 스타일 */
+.reset-button {
+  height: 40px;
+  font-size: 1rem;
+  margin-top: 5px;
+  padding: 10px 20px;
+  background-color: #2b2b2b;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reset-button:hover {
+  background-color: #666;
 }
 
 /* 영화 목록 섹션 */
