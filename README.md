@@ -152,9 +152,9 @@ npm run lint
 ## 스크린샷
 
 ### 홈 화면
-![Home Page](netflix-demo/public/screenshots/homepage.png)
+![Home Page](public/screenshots/homepage.png)
 
 ### 위시리스트 화면
-![Wishlist Page](netflix-demo/public/screenshots/wishlist.png)
+![Wishlist Page](public/screenshots/wishlist.png)
 
 ---
