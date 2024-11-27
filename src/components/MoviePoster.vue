@@ -36,7 +36,7 @@ export default defineComponent({
     const hover = ref(false); // 호버 상태 관리
 
     // 영화 설명을 일정 길이까지만 표시하고 초과 시 ... 처리
-    const maxLength = 50; // 최대 표시 길이
+    const maxLength = 30; // 최대 표시 길이
     const truncatedOverview = computed(() => {
       return props.movie.overview.length > maxLength
         ? props.movie.overview.slice(0, maxLength) + "..."

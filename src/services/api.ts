@@ -41,6 +41,20 @@ export const fetchMovieDetails = async (movieId: number): Promise<Movie> => {
   }
 };
 
+// 수정: 영화 데이터를 처리하는 유틸리티 함수 추가
+const processMovieData = (movie: any): Movie => {
+  return {
+    id: movie.id,
+    title: movie.title,
+    overview: movie.overview,
+    release_date: movie.release_date,
+    backdrop_path: movie.backdrop_path
+      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` // 상대 경로를 완전한 URL로 변경
+      : "", // 포스터 경로가 없을 경우 빈 문자열
+    genres: movie.genre_ids || [], // 장르 ID 배열
+  };
+};
+
 // 추가: 필터링 조건에 맞는 영화 목록 가져오기
 export const fetchMoviesByFilters = async (filters: {
   with_genres?: string;
@@ -58,7 +72,7 @@ export const fetchMoviesByFilters = async (filters: {
         },
       }
     );
-    return response.data.results;
+    return response.data.results.map(processMovieData);
   } catch (error) {
     console.error("Error fetching movies with filters:", error);
     throw error;
@@ -70,7 +84,8 @@ export const fetchMoviesByCategory = async (
 ): Promise<Movie[]> => {
   try {
     const response = await apiClient.get<{ results: any[] }>(
-      `/movie/${category}`
+      `/movie/${category}`,
+      { params: { language: "ko-KR" } }
     );
     return response.data.results.map(
       (movie): Movie => ({
