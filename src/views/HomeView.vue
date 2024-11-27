@@ -1,39 +1,60 @@
 <template>
   <div class="home">
     <MainBanner />
-    <div class="movies">
-      <MoviePoster
-        v-for="(movie, index) in movies"
-        :key="index"
-        :movie="movie"
-      />
-    </div>
+    <MovieList
+      v-for="(movies, index) in movieCategories"
+      :key="index"
+      :categoryTitle="movies.title"
+      :movies="movies.list"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import MoviePoster from "@/components/MoviePoster.vue";
+import { defineComponent, ref, onMounted } from "vue";
+import MovieList from "@/components/MovieList.vue";
+import { fetchMoviesByCategory } from "@/services/api";
 import MainBanner from "@/components/MainBanner.vue";
+import { Movie } from "@/types/movie";
 
 export default defineComponent({
   name: "HomeView",
   components: {
     MainBanner,
-    MoviePoster,
+    MovieList,
   },
-  data() {
+  setup() {
+    const movieCategories = ref<
+      Array<{
+        title: string;
+        list: Movie[];
+      }>
+    >([]);
+
+    const loadMovies = async () => {
+      try {
+        const categories = [
+          { title: "인기 콘텐츠", category: "popular" },
+          { title: "최신 영화", category: "now_playing" },
+          { title: "높은 평점", category: "top_rated" },
+          { title: "다가오는 영화", category: "upcoming" },
+        ];
+
+        for (const { title, category } of categories) {
+          const movies = await fetchMoviesByCategory(category);
+          movieCategories.value.push({ title, list: movies });
+        }
+      } catch (error) {
+        console.error("Error loading movies:", error);
+      }
+    };
+
+    onMounted(() => {
+      loadMovies();
+    });
+
     return {
-      movies: [
-        {
-          title: "Inception",
-          posterPath: "https://image.tmdb.org/t/p/w200/xyz.jpg",
-          description: "A mind-bending thriller about dream invasion.",
-          releaseDate: "2010-07-16",
-          genres: ["Action", "Sci-Fi", "Thriller"],
-        },
-        // 추가 영화 데이터
-      ],
+      movieCategories,
     };
   },
 });
@@ -41,12 +62,15 @@ export default defineComponent({
 
 <style scoped>
 .home {
-  padding: 0px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-.movies {
+/* .movies {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-}
+} */
 </style>
