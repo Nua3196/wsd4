@@ -10,9 +10,9 @@ const apiClient = axios.create({
   },
 });
 
-// API 키를 가져오는 유틸리티 함수
+// TMDB API 키를 가져오는 유틸리티 함수
 const getApiKey = (): string => {
-  const apiKey = store.getters.getAPIKey; // Vuex 스토어의 getter를 통해 API 키 가져오기
+  const apiKey = process.env.VUE_APP_TMDB_API_KEY; // .env 파일에서 키 가져오기
   if (!apiKey) {
     throw new Error("API key is missing. Please log in.");
   }

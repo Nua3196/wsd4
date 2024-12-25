@@ -1,7 +1,7 @@
 
 ---
 
-# netflix-demo
+# wsd4
 
 ## 넷플릭스 데모 프로젝트
 
@@ -46,13 +46,13 @@
 ### 1. 레포지토리 클론
 
 ```bash
-git clone https://github.com/Nua3196/netflix-demo.git
+git clone https://github.com/Nua3196/wsd4.git
 ```
 
 ### 2. 의존성 설치
 
 ```bash
-cd netflix-demo
+cd wsd4
 npm install
 ```
 
