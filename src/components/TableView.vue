@@ -27,13 +27,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import MoviePoster from "@/components/MoviePoster.vue";
-import { fetchMoviesByCategory } from "@/services/api";
-import { Movie } from "@/types/movie";
+import { defineComponent, ref, onMounted } from 'vue'
+import MoviePoster from '@/components/MoviePoster.vue'
+import { fetchMoviesByCategory } from '@/services/api'
+import { Movie } from '@/types/movie'
 
 export default defineComponent({
-  name: "TableView",
+  name: 'TableView',
   components: { MoviePoster },
   props: {
     category: {
@@ -42,45 +42,45 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const movies = ref<Movie[]>([]);
-    const currentPage = ref(1);
-    const hasMorePages = ref(true);
-    const totalPages = ref(10); // 총 페이지 수를 지정 (API에서 받아오는 경우 수정 필요)
+    const movies = ref<Movie[]>([])
+    const currentPage = ref(1)
+    const hasMorePages = ref(true)
+    const totalPages = ref(10) // 총 페이지 수를 지정 (API에서 받아오는 경우 수정 필요)
 
     const loadMovies = async (page: number) => {
       try {
-        const fetchedMovies = await fetchMoviesByCategory(props.category, page);
-        movies.value = fetchedMovies;
-        hasMorePages.value = fetchedMovies.length > 0;
+        const fetchedMovies = await fetchMoviesByCategory(props.category, page)
+        movies.value = fetchedMovies
+        hasMorePages.value = fetchedMovies.length > 0
       } catch (error) {
-        console.error("Error loading movies:", error);
+        console.error('Error loading movies:', error)
       }
-    };
+    }
 
     const nextPage = () => {
       if (hasMorePages.value && currentPage.value < totalPages.value) {
-        currentPage.value++;
-        loadMovies(currentPage.value);
+        currentPage.value++
+        loadMovies(currentPage.value)
       }
-    };
+    }
 
     const prevPage = () => {
       if (currentPage.value > 1) {
-        currentPage.value--;
-        loadMovies(currentPage.value);
+        currentPage.value--
+        loadMovies(currentPage.value)
       }
-    };
+    }
 
     const goToPage = (page: number) => {
       if (page !== currentPage.value) {
-        currentPage.value = page;
-        loadMovies(page);
+        currentPage.value = page
+        loadMovies(page)
       }
-    };
+    }
 
     onMounted(() => {
-      loadMovies(currentPage.value);
-    });
+      loadMovies(currentPage.value)
+    })
 
     return {
       movies,
@@ -90,9 +90,9 @@ export default defineComponent({
       nextPage,
       prevPage,
       goToPage,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>

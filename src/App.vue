@@ -9,56 +9,50 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  computed,
-  ref,
-  onMounted,
-  onBeforeUnmount,
-} from "vue";
-import AppHeader from "@/components/AppHeader.vue"; // 헤더 컴포넌트 임포트
-import { useRoute } from "vue-router";
+import { defineComponent, computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import AppHeader from '@/components/AppHeader.vue' // 헤더 컴포넌트 임포트
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
-  name: "App",
+  name: 'App',
   components: {
     AppHeader,
   },
   setup() {
-    const route = useRoute();
-    const isSignInPage = computed(() => route.path === "/signin");
+    const route = useRoute()
+    const isSignInPage = computed(() => route.path === '/signin')
 
-    const isScrolled = ref(false);
+    const isScrolled = ref(false)
 
     const handleScroll = () => {
-      const mainContent = document.querySelector(".main-content");
+      const mainContent = document.querySelector('.main-content')
       if (mainContent) {
-        isScrolled.value = mainContent.scrollTop > 0;
+        isScrolled.value = mainContent.scrollTop > 0
       }
-    };
+    }
 
     // 스크롤 이벤트 등록 및 해제
     onMounted(() => {
-      const mainContent = document.querySelector(".main-content");
+      const mainContent = document.querySelector('.main-content')
       if (mainContent) {
-        mainContent.addEventListener("scroll", handleScroll);
+        mainContent.addEventListener('scroll', handleScroll)
       }
-    });
+    })
 
     onBeforeUnmount(() => {
-      const mainContent = document.querySelector(".main-content");
+      const mainContent = document.querySelector('.main-content')
       if (mainContent) {
-        mainContent.removeEventListener("scroll", handleScroll);
+        mainContent.removeEventListener('scroll', handleScroll)
       }
-    });
+    })
 
-    return { isSignInPage, isScrolled };
+    return { isSignInPage, isScrolled }
   },
-});
+})
 </script>
 
 <style lang="scss">
-@import "vue-toast-notification/dist/theme-sugar.css";
+@import 'vue-toast-notification/dist/theme-sugar.css';
 
 #app {
   font-family: Arial, sans-serif;
@@ -69,7 +63,7 @@ export default defineComponent({
 }
 
 body {
-  background: url("./assets/images/paul-volkmer-qVotvbsuM_c-unsplash.jpg"); /* 배경 이미지 설정 */
+  background: url('./assets/images/paul-volkmer-qVotvbsuM_c-unsplash.jpg'); /* 배경 이미지 설정 */
   margin: 0;
   padding: 0;
   background-size: cover;

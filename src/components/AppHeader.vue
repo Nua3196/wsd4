@@ -15,20 +15,20 @@
       </nav>
     </div>
     <div class="user-info" v-if="loggedIn">
-      <i class="fa-solid fa-user"></i>
-      <span>{{ userID }}</span>
+      <img :src="thumbnail" alt="Profile Thumbnail" class="profile-thumbnail" />
+      <span>{{ nickname }}</span>
       <i class="fa-solid fa-arrow-right-from-bracket" @click="handleLogout"></i>
     </div>
   </header>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from "vue";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { defineComponent, computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
-  name: "AppHeader",
+  name: 'AppHeader',
   props: {
     isScrolled: {
       type: Boolean,
@@ -36,32 +36,36 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore();
-    const router = useRouter();
+    const store = useStore()
+    const router = useRouter()
 
-    const userID = computed(() => store.getters.getUserID);
-    const loggedIn = computed(() => store.getters.isLoggedIn);
+    const userID = computed(() => store.getters.getUserID)
+    const nickname = computed(() => store.state.nickname)
+    const thumbnail = computed(() => store.state.thumbnail)
+    const loggedIn = computed(() => store.getters.isLoggedIn)
 
-    const menuActive = ref(false);
+    const menuActive = ref(false)
 
-    const handleLogout = () => {
-      store.dispatch("logout");
-      router.push("/signin");
-    };
+    const handleLogout = async () => {
+      await store.dispatch('logout')
+      router.push('/signin')
+    }
 
     const toggleMenu = () => {
-      menuActive.value = !menuActive.value;
-    };
+      menuActive.value = !menuActive.value
+    }
 
     return {
       userID,
+      nickname,
+      thumbnail,
       loggedIn,
       menuActive,
       handleLogout,
       toggleMenu,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>
@@ -129,6 +133,13 @@ button {
   display: none; /* 기본적으로 숨김 */
   cursor: pointer;
   font-size: 1.5rem;
+}
+
+.profile-thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {

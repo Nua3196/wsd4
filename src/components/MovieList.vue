@@ -96,11 +96,11 @@ export default defineComponent({
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import MoviePoster from "@/components/MoviePoster.vue";
+import { defineComponent, ref } from 'vue'
+import MoviePoster from '@/components/MoviePoster.vue'
 
 export default defineComponent({
-  name: "MovieList",
+  name: 'MovieList',
   components: {
     MoviePoster, // MoviePoster 컴포넌트를 가져와서 사용
   },
@@ -112,40 +112,40 @@ export default defineComponent({
     movies: {
       // 영화 목록 데이터를 배열로 받음
       type: Array as () => Array<{
-        id: number;
-        title: string;
-        backdrop_path: string;
-        overview: string;
-        release_date: string;
-        genres: string[];
+        id: number
+        title: string
+        backdrop_path: string
+        overview: string
+        release_date: string
+        genres: string[]
       }>,
       required: true,
     },
   },
   setup() {
-    const scrollContainer = ref<HTMLElement | null>(null); // 스크롤 컨테이너를 참조
+    const scrollContainer = ref<HTMLElement | null>(null) // 스크롤 컨테이너를 참조
 
     // 왼쪽으로 스크롤하는 함수
     const scrollLeft = () => {
       if (scrollContainer.value) {
-        scrollContainer.value.scrollBy({ left: -300, behavior: "smooth" }); // 300px 왼쪽으로 이동
+        scrollContainer.value.scrollBy({ left: -300, behavior: 'smooth' }) // 300px 왼쪽으로 이동
       }
-    };
+    }
 
     // 오른쪽으로 스크롤하는 함수
     const scrollRight = () => {
       if (scrollContainer.value) {
-        scrollContainer.value.scrollBy({ left: 300, behavior: "smooth" }); // 300px 오른쪽으로 이동
+        scrollContainer.value.scrollBy({ left: 300, behavior: 'smooth' }) // 300px 오른쪽으로 이동
       }
-    };
+    }
 
     return {
       scrollContainer, // 스크롤 컨테이너 참조 반환
       scrollLeft, // 왼쪽 스크롤 함수 반환
       scrollRight, // 오른쪽 스크롤 함수 반환
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>

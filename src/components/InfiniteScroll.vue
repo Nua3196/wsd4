@@ -8,13 +8,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from "vue";
-import MoviePoster from "@/components/MoviePoster.vue";
-import { fetchMoviesByCategory } from "@/services/api";
-import { Movie } from "@/types/movie";
+import { defineComponent, ref, onMounted, watch } from 'vue'
+import MoviePoster from '@/components/MoviePoster.vue'
+import { fetchMoviesByCategory } from '@/services/api'
+import { Movie } from '@/types/movie'
 
 export default defineComponent({
-  name: "InfiniteScrollView",
+  name: 'InfiniteScrollView',
   components: { MoviePoster },
   props: {
     category: {
@@ -23,52 +23,52 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const movies = ref<Movie[]>([]);
-    const currentPage = ref(1);
-    const loading = ref(false);
-    const hasMorePages = ref(true);
+    const movies = ref<Movie[]>([])
+    const currentPage = ref(1)
+    const loading = ref(false)
+    const hasMorePages = ref(true)
 
     const loadMovies = async () => {
-      if (loading.value || !hasMorePages.value) return;
-      loading.value = true;
+      if (loading.value || !hasMorePages.value) return
+      loading.value = true
       try {
         const fetchedMovies = await fetchMoviesByCategory(
           props.category,
           currentPage.value
-        );
+        )
         if (fetchedMovies.length > 0) {
-          movies.value = [...movies.value, ...fetchedMovies];
-          currentPage.value++;
+          movies.value = [...movies.value, ...fetchedMovies]
+          currentPage.value++
         } else {
-          hasMorePages.value = false;
+          hasMorePages.value = false
         }
       } catch (error) {
-        console.error("Error fetching movies:", error);
+        console.error('Error fetching movies:', error)
       } finally {
-        loading.value = false;
+        loading.value = false
       }
-    };
+    }
 
     const handleScroll = () => {
       const scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      const windowHeight = window.innerHeight;
+        document.documentElement.scrollTop || document.body.scrollTop
+      const windowHeight = window.innerHeight
       const scrollHeight =
-        document.documentElement.scrollHeight || document.body.scrollHeight;
+        document.documentElement.scrollHeight || document.body.scrollHeight
 
       if (scrollTop + windowHeight >= scrollHeight - 10) {
-        loadMovies();
+        loadMovies()
       }
-    };
+    }
 
     onMounted(() => {
-      loadMovies();
-      window.addEventListener("scroll", handleScroll);
-    });
+      loadMovies()
+      window.addEventListener('scroll', handleScroll)
+    })
 
-    return { movies, loading };
+    return { movies, loading }
   },
-});
+})
 </script>
 
 <style scoped>

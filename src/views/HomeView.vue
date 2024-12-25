@@ -11,14 +11,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import MovieList from "@/components/MovieList.vue";
-import { fetchMoviesByCategory } from "@/services/api";
-import MainBanner from "@/components/MainBanner.vue";
-import { Movie } from "@/types/movie";
+import { defineComponent, ref, onMounted } from 'vue'
+import MovieList from '@/components/MovieList.vue'
+import { fetchMoviesByCategory } from '@/services/api'
+import MainBanner from '@/components/MainBanner.vue'
+import { Movie } from '@/types/movie'
 
 export default defineComponent({
-  name: "HomeView",
+  name: 'HomeView',
   components: {
     MainBanner,
     MovieList,
@@ -26,38 +26,38 @@ export default defineComponent({
   setup() {
     const movieCategories = ref<
       Array<{
-        title: string;
-        list: Movie[];
+        title: string
+        list: Movie[]
       }>
-    >([]);
+    >([])
 
     const loadMovies = async () => {
       try {
         const categories = [
-          { title: "인기 콘텐츠", category: "popular" },
-          { title: "최신 영화", category: "now_playing" },
-          { title: "높은 평점", category: "top_rated" },
-          { title: "다가오는 영화", category: "upcoming" },
-        ];
+          { title: '인기 콘텐츠', category: 'popular' },
+          { title: '최신 영화', category: 'now_playing' },
+          { title: '높은 평점', category: 'top_rated' },
+          { title: '다가오는 영화', category: 'upcoming' },
+        ]
 
         for (const { title, category } of categories) {
-          const movies = await fetchMoviesByCategory(category);
-          movieCategories.value.push({ title, list: movies });
+          const movies = await fetchMoviesByCategory(category)
+          movieCategories.value.push({ title, list: movies })
         }
       } catch (error) {
-        console.error("Error loading movies:", error);
+        console.error('Error loading movies:', error)
       }
-    };
+    }
 
     onMounted(() => {
-      loadMovies();
-    });
+      loadMovies()
+    })
 
     return {
       movieCategories,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>

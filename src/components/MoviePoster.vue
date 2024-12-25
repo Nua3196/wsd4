@@ -17,12 +17,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from "vue";
-import { useStore } from "vuex";
-import { Movie } from "@/types/movie";
+import { defineComponent, ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { Movie } from '@/types/movie'
 
 export default defineComponent({
-  name: "MoviePoster",
+  name: 'MoviePoster',
   props: {
     movie: {
       type: Object as () => Movie,
@@ -30,36 +30,36 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore(); // Vuex Store 사용
-    const hover = ref(false); // 호버 상태 관리
+    const store = useStore() // Vuex Store 사용
+    const hover = ref(false) // 호버 상태 관리
 
     // Wishlist에 있는지 확인
     const isInWishlist = computed(() =>
       store.getters.getWishlist.some(
         (item: Movie) => item.id === props.movie.id
       )
-    );
+    )
 
     // Wishlist 추가/제거 토글
     const toggleWishlist = () => {
       if (isInWishlist.value) {
-        store.dispatch("removeMovieFromWishlist", props.movie.id); // 영화 ID로 제거
+        store.dispatch('removeMovieFromWishlist', props.movie.id) // 영화 ID로 제거
       } else {
-        store.dispatch("addMovieToWishlist", props.movie); // 영화 객체로 추가
+        store.dispatch('addMovieToWishlist', props.movie) // 영화 객체로 추가
       }
-    };
+    }
 
     // 영화 설명을 일정 길이까지만 표시하고 초과 시 ... 처리
-    const maxLength = 30; // 최대 표시 길이
+    const maxLength = 30 // 최대 표시 길이
     const truncatedOverview = computed(() => {
       return props.movie.overview.length > maxLength
-        ? props.movie.overview.slice(0, maxLength) + "..."
-        : props.movie.overview;
-    });
+        ? props.movie.overview.slice(0, maxLength) + '...'
+        : props.movie.overview
+    })
 
-    return { hover, truncatedOverview, isInWishlist, toggleWishlist };
+    return { hover, truncatedOverview, isInWishlist, toggleWishlist }
   },
-});
+})
 </script>
 
 <style scoped>

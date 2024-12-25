@@ -47,77 +47,77 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import { fetchMoviesByFilters, fetchGenres } from "@/services/api";
-import MoviePoster from "@/components/MoviePoster.vue";
+import { defineComponent, ref, onMounted } from 'vue'
+import { fetchMoviesByFilters, fetchGenres } from '@/services/api'
+import MoviePoster from '@/components/MoviePoster.vue'
 
 export default defineComponent({
-  name: "SearchView",
+  name: 'SearchView',
   components: { MoviePoster },
   setup() {
-    const genres = ref<{ id: number; name: string }[]>([]);
-    const movies = ref<any[]>([]);
-    const page = ref<number>(1);
-    const selectedGenre = ref<string>("");
-    const selectedRating = ref<string>("");
-    const selectedLanguage = ref<string>("");
-    const observer = ref<HTMLElement | null>(null);
+    const genres = ref<{ id: number; name: string }[]>([])
+    const movies = ref<any[]>([])
+    const page = ref<number>(1)
+    const selectedGenre = ref<string>('')
+    const selectedRating = ref<string>('')
+    const selectedLanguage = ref<string>('')
+    const observer = ref<HTMLElement | null>(null)
 
     // 장르 목록 로드
     const loadGenres = async () => {
       try {
-        genres.value = await fetchGenres();
+        genres.value = await fetchGenres()
       } catch (error) {
-        console.error("Error loading genres:", error);
+        console.error('Error loading genres:', error)
       }
-    };
+    }
 
     // 영화 목록 가져오기
     const fetchMovies = async () => {
       const newMovies = await fetchMoviesByFilters({
         with_genres: selectedGenre.value,
-        "vote_average.gte": selectedRating.value
+        'vote_average.gte': selectedRating.value
           ? parseInt(selectedRating.value)
           : undefined,
 
         with_original_language: selectedLanguage.value,
         page: page.value,
-      });
-      movies.value = [...movies.value, ...newMovies];
-    };
+      })
+      movies.value = [...movies.value, ...newMovies]
+    }
 
     // 필터 초기화 및 새 데이터 로드
     const resetMovies = () => {
-      movies.value = [];
-      page.value = 1;
-      fetchMovies();
-    };
+      movies.value = []
+      page.value = 1
+      fetchMovies()
+    }
 
     // 필터링 조건 초기화
     const resetFilters = () => {
-      selectedGenre.value = "";
-      selectedRating.value = "";
-      selectedLanguage.value = "";
-      resetMovies(); // 초기화 후 영화 다시 로드
-    };
+      selectedGenre.value = ''
+      selectedRating.value = ''
+      selectedLanguage.value = ''
+      resetMovies() // 초기화 후 영화 다시 로드
+    }
 
     // 무한 스크롤 관찰자 생성
     const createObserver = () => {
-      if (!observer.value) return;
+      if (!observer.value) return
       const io = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          page.value += 1;
-          fetchMovies();
+          page.value += 1
+          fetchMovies()
         }
-      });
-      io.observe(observer.value);
-    };
+      })
+      io.observe(observer.value)
+    }
 
     onMounted(() => {
-      loadGenres();
-      fetchMovies();
-      createObserver();
-    });
+      loadGenres()
+      fetchMovies()
+      createObserver()
+    })
 
     return {
       genres,
@@ -129,9 +129,9 @@ export default defineComponent({
       observer,
       fetchMovies,
       resetMovies,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>

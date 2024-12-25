@@ -23,23 +23,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import TableView from "@/components/TableView.vue";
-import InfiniteScrollView from "@/components/InfiniteScroll.vue";
+import { defineComponent, ref } from 'vue'
+import TableView from '@/components/TableView.vue'
+import InfiniteScrollView from '@/components/InfiniteScroll.vue'
 
 export default defineComponent({
-  name: "PopularView",
+  name: 'PopularView',
   components: { TableView, InfiniteScrollView },
   setup() {
-    const isTableView = ref(true);
+    const isTableView = ref(true)
 
-    const setViewMode = (mode: "table" | "infinite") => {
-      isTableView.value = mode === "table";
-    };
+    const setViewMode = (mode: 'table' | 'infinite') => {
+      isTableView.value = mode === 'table'
+    }
 
-    return { isTableView, setViewMode };
+    return { isTableView, setViewMode }
   },
-});
+})
 </script>
 
 <style scoped>
