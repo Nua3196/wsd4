@@ -16,6 +16,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Logger } from '@/utils/logger';
 
 export default defineComponent({
   name: "SignInView",
@@ -23,6 +24,7 @@ export default defineComponent({
     // 카카오 로그인 리다이렉트
     const redirectToKakaoLogin = () => {
       const clientId = process.env.VUE_APP_KAKAO_API_KEY; // .env에서 REST API 키 가져오기
+      Logger.info("API Key:", process.env.VUE_APP_TMDB_API_KEY);
       const scheme = process.env.VUE_APP_SCHEME;
       const host = process.env.VUE_IP_ADDRESS;
       const port = process.env.VUE_APP_PORT;
