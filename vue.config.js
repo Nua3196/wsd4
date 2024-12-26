@@ -1,4 +1,5 @@
 import ESLintPlugin from 'eslint-webpack-plugin';
+import webpack from 'webpack';
 
 export default {
     lintOnSave: false,
