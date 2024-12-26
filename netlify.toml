@@ -1,6 +1,6 @@
 [build]
   publish = "dist"
-  command = "env && vue-cli-service build"
+  command = "npm run build"
 
 [[redirects]]
   from = "/*"

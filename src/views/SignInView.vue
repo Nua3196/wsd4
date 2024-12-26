@@ -25,7 +25,7 @@ export default defineComponent({
     const redirectToKakaoLogin = () => {
       const clientId = process.env.VUE_APP_KAKAO_API_KEY; // .env에서 REST API 키 가져오기
       const scheme = process.env.VUE_APP_SCHEME;
-      const host = process.env.VUE_IP_ADDRESS;
+      const host = process.env.VUE_APP_IP_ADDRESS;
       Logger.info("Host:", process.env.VUE_APP_IP_ADDRESS);
       const port = process.env.VUE_APP_PORT;
       Logger.info("Port:", process.env.VUE_APP_PORT);
