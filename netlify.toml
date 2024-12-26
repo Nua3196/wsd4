@@ -2,6 +2,9 @@
   publish = "dist"
   command = "vue-cli-service build"
 
+[[plugins]]
+  package = "@netlify/plugin-env"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
