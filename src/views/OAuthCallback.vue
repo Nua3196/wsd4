@@ -21,8 +21,11 @@ export default {
       try {
         const scheme = process.env.VUE_APP_SCHEME;
         const host = process.env.VUE_APP_IP_ADDRESS;
+        Logger.info("Host:", host)
         const port = process.env.VUE_APP_PORT;
+        Logger.info("Port:", port)
         const redirectUri = `${scheme}://${host}:${port}/oauth`; // Redirect URI 동적으로 구성
+        Logger.info("redirectUri:", redirectUri)
         const response = await fetch("https://kauth.kakao.com/oauth/token", {
           method: "POST",
           headers: {

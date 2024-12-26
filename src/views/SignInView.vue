@@ -27,8 +27,11 @@ export default defineComponent({
       Logger.info("API Key:", process.env.VUE_APP_TMDB_API_KEY);
       const scheme = process.env.VUE_APP_SCHEME;
       const host = process.env.VUE_IP_ADDRESS;
+      Logger.info("Host:", host)
       const port = process.env.VUE_APP_PORT;
+      Logger.info("Port:", port)
       const redirectUri = `${scheme}://${host}:${port}/oauth`; // Redirect URI 동적으로 구성
+      Logger.info("redirectUri:", redirectUri)
       const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&prompt=login&response_type=code`;
       window.location.href = kakaoAuthUrl; // 카카오 로그인 페이지로 리다이렉트
     };
