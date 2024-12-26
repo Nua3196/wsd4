@@ -91,7 +91,7 @@ npm run serve
 
 - 이 프로젝트는 Netlify를 통해 배포되었습니다.
 - 배포된 애플리케이션은 아래 링크에서 확인할 수 있습니다:
-  [배포 링크](https://lucky-praline-fc7819.netlify.app/)
+  [배포 링크](https://wsd-hw4.netlify.app/)
 
 #### **배포 명령어**
 ```bash
