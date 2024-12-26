@@ -7,6 +7,7 @@
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toast-notification'
 import { useStore } from 'vuex'
+import { Logger } from '@/utils/logger'
 
 export default {
   name: 'OAuthCallback',
@@ -18,9 +19,10 @@ export default {
     // 액세스 토큰 요청
     const fetchAccessToken = async (authCode: string) => {
       try {
-        const host = process.env.VUE_APP_IP_ADDRESS || 'localhost' // 기본값 설정
-        const port = process.env.VUE_APP_PORT || '8080' // 기본값 설정
-        const redirectUri = `http://${host}:${port}/oauth` // Redirect URI 동적으로 구성
+        const scheme = process.env.VUE_APP_SCHEME
+        const host = process.env.VUE_APP_IP_ADDRESS
+        const port = process.env.VUE_APP_PORT
+        const redirectUri = `${scheme}://${host}:${port}/oauth` // Redirect URI 동적으로 구성
         const response = await fetch('https://kauth.kakao.com/oauth/token', {
           method: 'POST',
           headers: {
@@ -37,11 +39,11 @@ export default {
         const data = await response.json()
         if (data.error) throw new Error(data.error_description)
 
-        console.log('Access Token:', data.access_token)
+        Logger.info('Access Token:', data.access_token)
         fetchUserInfo(data.access_token)
       } catch (error) {
-        console.error('Error fetching access token:', error)
-        toast.error('Login failed. Redirecting to Sign In...')
+        Logger.error('Error fetching access token:', error)
+        toast.error('로그인이 실패했습니다. 로그인 화면으로 이동합니다...')
         router.push('/signin') // 로그인 페이지로 이동
       }
     }
@@ -57,7 +59,7 @@ export default {
         })
 
         const userInfo = await response.json()
-        console.log('User Info:', userInfo)
+        Logger.info('User Info:', userInfo)
 
         // Vuex에 로그인 상태 업데이트
         store.dispatch('login', {
@@ -71,8 +73,8 @@ export default {
         toast.success(`Welcome, ${userInfo.kakao_account.profile.nickname}!`)
         router.push('/') // 로그인 성공 후 홈으로 이동
       } catch (error) {
-        console.error('Error fetching user info:', error)
-        toast.error('Failed to retrieve user information.')
+        Logger.error('Error fetching user info:', error)
+        toast.error('사용자 정보를 받아오지 못했습니다.')
         router.push('/signin') // 로그인 페이지로 이동
       }
     }
@@ -85,7 +87,7 @@ export default {
       if (authCode) {
         fetchAccessToken(authCode) // 인증 코드로 액세스 토큰 요청
       } else {
-        toast.error('Authorization code is missing.')
+        toast.error('인증 코드가 없습니다.')
         router.push('/signin') // 로그인 페이지로 이동
       }
     }

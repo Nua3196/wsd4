@@ -31,6 +31,7 @@ import { defineComponent, ref, onMounted } from 'vue'
 import MoviePoster from '@/components/MoviePoster.vue'
 import { fetchMoviesByCategory } from '@/services/api'
 import { Movie } from '@/types/movie'
+import { Logger } from '@/utils/logger'
 
 export default defineComponent({
   name: 'TableView',
@@ -53,7 +54,7 @@ export default defineComponent({
         movies.value = fetchedMovies
         hasMorePages.value = fetchedMovies.length > 0
       } catch (error) {
-        console.error('Error loading movies:', error)
+        Logger.error('Error loading movies:', error)
       }
     }
 

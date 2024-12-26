@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import { Logger } from '@/utils/logger'
 
 export default createStore({
   state: {
@@ -92,9 +93,9 @@ export default createStore({
             Authorization: `Bearer ${state.accessToken}`,
           },
         })
-        console.log('Access Token expired on Kakao server.')
+        Logger.warn('Access Token expired on Kakao server.')
       } catch (error) {
-        console.error('Error logging out from Kakao:', error)
+        Logger.error('Error logging out from Kakao:', error)
       }
 
       // Vuex 상태 초기화
@@ -116,7 +117,7 @@ export default createStore({
       // Access Token 검증
       const isValid = await dispatch('validateAccessToken')
       if (!isValid) {
-        console.warn('Access Token is invalid. Logging out.')
+        Logger.warn('Access Token is invalid. Logging out.')
         dispatch('logout') // 유효하지 않은 경우 로그아웃
       }
     },
@@ -133,13 +134,13 @@ export default createStore({
         )
         const data = await response.json()
         if (data.id) {
-          console.log('Access Token is valid:', data)
+          Logger.info('Access Token is valid:', data)
           return true // 유효한 토큰
         }
-        console.error('Invalid Access Token:', data)
+        Logger.warn('Invalid Access Token:', data)
         return false // 유효하지 않은 토큰
       } catch (error) {
-        console.error('Error validating Access Token:', error)
+        Logger.error('Error validating Access Token:', error)
         return false
       }
     },
@@ -165,7 +166,7 @@ export default createStore({
           const data = await response.json()
           return data.id ? true : false // 유효한 토큰인지 확인
         } catch (error) {
-          console.error('Error checking Access Token:', error)
+          Logger.error('Error checking Access Token:', error)
           return false
         }
       }

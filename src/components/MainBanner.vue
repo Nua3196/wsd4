@@ -22,6 +22,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { fetchNowPlayingMovies } from '@/services/api'
 import { Movie } from '@/types/movie'
+import { Logger } from '@/utils/logger'
 
 export default defineComponent({
   name: 'MainBanner',
@@ -35,7 +36,7 @@ export default defineComponent({
           currentMovie.value = movies[0] // 첫 번째 영화 선택
         }
       } catch (error) {
-        console.error('Error loading now playing movie:', error)
+        Logger.error('Error loading now playing movie:', error)
       }
     }
 

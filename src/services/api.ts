@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Movie } from '@/types/movie'
 import store from '@/store' // Vuex 스토어를 가져옵니다.
+import { Logger } from '@/utils/logger'
 
 // Axios 클라이언트 설정
 const apiClient = axios.create({
@@ -34,7 +35,7 @@ export const fetchNowPlayingMovies = async (): Promise<Movie[]> => {
     )
     return response.data.results
   } catch (error) {
-    console.error('Error fetching now playing movies:', error)
+    Logger.error('Error fetching now playing movies:', error)
     throw error
   }
 }
@@ -50,7 +51,7 @@ export const fetchMovieDetails = async (movieId: number): Promise<Movie> => {
     })
     return response.data
   } catch (error) {
-    console.error('Error fetching movie details:', error)
+    Logger.error('Error fetching movie details:', error)
     throw error
   }
 }
@@ -70,7 +71,7 @@ export const fetchGenres = async (): Promise<
     })
     return response.data.genres
   } catch (error) {
-    console.error('Error fetching genres:', error)
+    Logger.error('Error fetching genres:', error)
     throw error
   }
 }
@@ -95,7 +96,7 @@ export const fetchMoviesByFilters = async (filters: {
     )
     return response.data.results.map(processMovieData)
   } catch (error) {
-    console.error('Error fetching movies with filters:', error)
+    Logger.error('Error fetching movies with filters:', error)
     throw error
   }
 }
@@ -118,7 +119,7 @@ export const fetchMoviesByCategory = async (
     )
     return response.data.results.map(processMovieData)
   } catch (error) {
-    console.error(`Error fetching ${category} movies:`, error)
+    Logger.error(`Error fetching ${category} movies:`, error)
     return []
   }
 }

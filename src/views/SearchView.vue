@@ -50,6 +50,7 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import { fetchMoviesByFilters, fetchGenres } from '@/services/api'
 import MoviePoster from '@/components/MoviePoster.vue'
+import { Logger } from '@/utils/logger'
 
 export default defineComponent({
   name: 'SearchView',
@@ -68,7 +69,7 @@ export default defineComponent({
       try {
         genres.value = await fetchGenres()
       } catch (error) {
-        console.error('Error loading genres:', error)
+        Logger.error('Error loading genres:', error)
       }
     }
 

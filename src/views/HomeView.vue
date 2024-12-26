@@ -16,6 +16,7 @@ import MovieList from '@/components/MovieList.vue'
 import { fetchMoviesByCategory } from '@/services/api'
 import MainBanner from '@/components/MainBanner.vue'
 import { Movie } from '@/types/movie'
+import { Logger } from '@/utils/logger'
 
 export default defineComponent({
   name: 'HomeView',
@@ -45,7 +46,7 @@ export default defineComponent({
           movieCategories.value.push({ title, list: movies })
         }
       } catch (error) {
-        console.error('Error loading movies:', error)
+        Logger.error('Error loading movies:', error)
       }
     }
 

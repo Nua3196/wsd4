@@ -14,6 +14,7 @@ import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import MoviePoster from '@/components/MoviePoster.vue'
 import { fetchMoviesByCategory } from '@/services/api'
 import { Movie } from '@/types/movie'
+import { Logger } from '@/utils/logger'
 
 export default defineComponent({
   name: 'InfiniteScrollView',
@@ -46,7 +47,7 @@ export default defineComponent({
           hasMorePages.value = false
         }
       } catch (error) {
-        console.error('Error fetching movies:', error)
+        Logger.error('Error fetching movies:', error)
       } finally {
         loading.value = false
       }

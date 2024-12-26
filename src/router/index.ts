@@ -6,6 +6,7 @@ import WishlistView from '@/views/WishlistView.vue'
 import SignInView from '@/views/SignInView.vue'
 import OAuthCallback from '@/views/OAuthCallback.vue'
 import { useStore } from 'vuex' // Vuex 스토어를 사용
+import { Logger } from '@/utils/logger'
 
 const routes = [
   {
@@ -63,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
     // 로그인 상태일 경우 Access Token 유효성 확인
     const isValid = await store.dispatch('validateAccessToken')
     if (!isValid) {
-      console.warn('Access Token expired. Logging out.')
+      Logger.warn('Access Token expired. Logging out.')
       store.dispatch('logout')
       return next('/signin')
     }
