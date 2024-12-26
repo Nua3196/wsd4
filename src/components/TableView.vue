@@ -10,31 +10,31 @@
     </div>
     <!-- 페이지네이션 -->
     <div class="pagination">
-      <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+      <button :disabled="currentPage === 1" @click="prevPage">이전</button>
       <div class="page-numbers">
         <span
           v-for="page in totalPages"
           :key="page"
-          @click="goToPage(page)"
           :class="{ active: currentPage === page }"
+          @click="goToPage(page)"
         >
           {{ page }}
         </span>
       </div>
-      <button @click="nextPage" :disabled="!hasMorePages">다음</button>
+      <button :disabled="!hasMorePages" @click="nextPage">다음</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
-import MoviePoster from '@/components/MoviePoster.vue'
-import { fetchMoviesByCategory } from '@/services/api'
-import { Movie } from '@/types/movie'
-import { Logger } from '@/utils/logger'
+import { defineComponent, ref, onMounted } from "vue";
+import MoviePoster from "@/components/MoviePoster.vue";
+import { fetchMoviesByCategory } from "@/services/api";
+import { Movie } from "@/types/movie";
+import { Logger } from "@/utils/logger";
 
 export default defineComponent({
-  name: 'TableView',
+  name: "TableView",
   components: { MoviePoster },
   props: {
     category: {
@@ -43,45 +43,45 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const movies = ref<Movie[]>([])
-    const currentPage = ref(1)
-    const hasMorePages = ref(true)
-    const totalPages = ref(10) // 총 페이지 수를 지정 (API에서 받아오는 경우 수정 필요)
+    const movies = ref<Movie[]>([]);
+    const currentPage = ref(1);
+    const hasMorePages = ref(true);
+    const totalPages = ref(10); // 총 페이지 수를 지정 (API에서 받아오는 경우 수정 필요)
 
     const loadMovies = async (page: number) => {
       try {
-        const fetchedMovies = await fetchMoviesByCategory(props.category, page)
-        movies.value = fetchedMovies
-        hasMorePages.value = fetchedMovies.length > 0
+        const fetchedMovies = await fetchMoviesByCategory(props.category, page);
+        movies.value = fetchedMovies;
+        hasMorePages.value = fetchedMovies.length > 0;
       } catch (error) {
-        Logger.error('Error loading movies:', error)
+        Logger.error("Error loading movies:", error);
       }
-    }
+    };
 
     const nextPage = () => {
       if (hasMorePages.value && currentPage.value < totalPages.value) {
-        currentPage.value++
-        loadMovies(currentPage.value)
+        currentPage.value++;
+        loadMovies(currentPage.value);
       }
-    }
+    };
 
     const prevPage = () => {
       if (currentPage.value > 1) {
-        currentPage.value--
-        loadMovies(currentPage.value)
+        currentPage.value--;
+        loadMovies(currentPage.value);
       }
-    }
+    };
 
     const goToPage = (page: number) => {
       if (page !== currentPage.value) {
-        currentPage.value = page
-        loadMovies(page)
+        currentPage.value = page;
+        loadMovies(page);
       }
-    }
+    };
 
     onMounted(() => {
-      loadMovies(currentPage.value)
-    })
+      loadMovies(currentPage.value);
+    });
 
     return {
       movies,
@@ -91,9 +91,9 @@ export default defineComponent({
       nextPage,
       prevPage,
       goToPage,
-    }
+    };
   },
-})
+});
 </script>
 
 <style scoped>

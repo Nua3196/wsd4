@@ -19,23 +19,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
-import { useStore } from 'vuex'
-import MoviePoster from '@/components/MoviePoster.vue'
-import { Movie } from '@/types/movie'
+import { defineComponent, computed } from "vue";
+import { useStore } from "vuex";
+import MoviePoster from "@/components/MoviePoster.vue";
+import { Movie } from "@/types/movie";
 
 export default defineComponent({
-  name: 'WishlistView',
+  name: "WishlistView",
   components: { MoviePoster },
   setup() {
-    const store = useStore()
+    const store = useStore();
 
     // Vuex에서 찜한 영화 목록 가져오기
-    const wishlistMovies = computed<Movie[]>(() => store.getters.getWishlist)
+    const wishlistMovies = computed<Movie[]>(() => store.getters.getWishlist);
 
-    return { wishlistMovies }
+    return { wishlistMovies };
   },
-})
+});
 </script>
 
 <style scoped>

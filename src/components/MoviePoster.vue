@@ -7,22 +7,22 @@
   >
     <img :src="movie.backdrop_path" :alt="movie.title" class="poster" />
     <!-- 마우스 호버 시 추가 정보 표시 -->
-    <div class="info" v-if="hover">
+    <div v-if="hover" class="info">
       <h3 class="title">{{ movie.title }}</h3>
       <p class="description">{{ truncatedOverview }}</p>
     </div>
     <!-- 찜 여부 표시 -->
-    <div class="wishlist-indicator" v-if="isInWishlist">❤️</div>
+    <div v-if="isInWishlist" class="wishlist-indicator">❤️</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
-import { useStore } from 'vuex'
-import { Movie } from '@/types/movie'
+import { defineComponent, ref, computed } from "vue";
+import { useStore } from "vuex";
+import { Movie } from "@/types/movie";
 
 export default defineComponent({
-  name: 'MoviePoster',
+  name: "MoviePoster",
   props: {
     movie: {
       type: Object as () => Movie,
@@ -30,36 +30,36 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore() // Vuex Store 사용
-    const hover = ref(false) // 호버 상태 관리
+    const store = useStore(); // Vuex Store 사용
+    const hover = ref(false); // 호버 상태 관리
 
     // Wishlist에 있는지 확인
     const isInWishlist = computed(() =>
       store.getters.getWishlist.some(
-        (item: Movie) => item.id === props.movie.id
-      )
-    )
+        (item: Movie) => item.id === props.movie.id,
+      ),
+    );
 
     // Wishlist 추가/제거 토글
     const toggleWishlist = () => {
       if (isInWishlist.value) {
-        store.dispatch('removeMovieFromWishlist', props.movie.id) // 영화 ID로 제거
+        store.dispatch("removeMovieFromWishlist", props.movie.id); // 영화 ID로 제거
       } else {
-        store.dispatch('addMovieToWishlist', props.movie) // 영화 객체로 추가
+        store.dispatch("addMovieToWishlist", props.movie); // 영화 객체로 추가
       }
-    }
+    };
 
     // 영화 설명을 일정 길이까지만 표시하고 초과 시 ... 처리
-    const maxLength = 30 // 최대 표시 길이
+    const maxLength = 30; // 최대 표시 길이
     const truncatedOverview = computed(() => {
       return props.movie.overview.length > maxLength
-        ? props.movie.overview.slice(0, maxLength) + '...'
-        : props.movie.overview
-    })
+        ? props.movie.overview.slice(0, maxLength) + "..."
+        : props.movie.overview;
+    });
 
-    return { hover, truncatedOverview, isInWishlist, toggleWishlist }
+    return { hover, truncatedOverview, isInWishlist, toggleWishlist };
   },
-})
+});
 </script>
 
 <style scoped>
@@ -70,7 +70,9 @@ export default defineComponent({
   overflow: visible;
   border-radius: 10px;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 }
 
 .movie-card:hover {

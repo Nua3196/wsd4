@@ -15,27 +15,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'SignInView',
+  name: "SignInView",
   setup() {
     // 카카오 로그인 리다이렉트
     const redirectToKakaoLogin = () => {
-      const clientId = process.env.VUE_APP_KAKAO_API_KEY // .env에서 REST API 키 가져오기
-      const scheme = process.env.VUE_APP_SCHEME
-      const host = process.env.VUE_IP_ADDRESS
-      const port = process.env.VUE_APP_PORT
-      const redirectUri = `${scheme}://${host}:${port}/oauth` // Redirect URI 동적으로 구성
-      const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&prompt=login&response_type=code`
-      window.location.href = kakaoAuthUrl // 카카오 로그인 페이지로 리다이렉트
-    }
+      const clientId = process.env.VUE_APP_KAKAO_API_KEY; // .env에서 REST API 키 가져오기
+      const scheme = process.env.VUE_APP_SCHEME;
+      const host = process.env.VUE_IP_ADDRESS;
+      const port = process.env.VUE_APP_PORT;
+      const redirectUri = `${scheme}://${host}:${port}/oauth`; // Redirect URI 동적으로 구성
+      const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&prompt=login&response_type=code`;
+      window.location.href = kakaoAuthUrl; // 카카오 로그인 페이지로 리다이렉트
+    };
 
     return {
       redirectToKakaoLogin,
-    }
+    };
   },
-})
+});
 </script>
 
 <style scoped>

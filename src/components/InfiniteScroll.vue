@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
-import MoviePoster from '@/components/MoviePoster.vue'
-import { fetchMoviesByCategory } from '@/services/api'
-import { Movie } from '@/types/movie'
-import { Logger } from '@/utils/logger'
+import { defineComponent, ref, onMounted, onUnmounted } from "vue";
+import MoviePoster from "@/components/MoviePoster.vue";
+import { fetchMoviesByCategory } from "@/services/api";
+import { Movie } from "@/types/movie";
+import { Logger } from "@/utils/logger";
 
 export default defineComponent({
-  name: 'InfiniteScrollView',
+  name: "InfiniteScrollView",
   components: { MoviePoster },
   props: {
     category: {
@@ -26,56 +26,56 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const movies = ref<Movie[]>([])
-    const currentPage = ref(1)
-    const loading = ref(false)
-    const hasMorePages = ref(true)
-    const observerRef = ref<HTMLElement | null>(null)
+    const movies = ref<Movie[]>([]);
+    const currentPage = ref(1);
+    const loading = ref(false);
+    const hasMorePages = ref(true);
+    const observerRef = ref<HTMLElement | null>(null);
 
     const loadMovies = async () => {
-      if (loading.value || !hasMorePages.value) return
-      loading.value = true
+      if (loading.value || !hasMorePages.value) return;
+      loading.value = true;
       try {
         const fetchedMovies = await fetchMoviesByCategory(
           props.category,
-          currentPage.value
-        )
+          currentPage.value,
+        );
         if (fetchedMovies.length > 0) {
-          movies.value = [...movies.value, ...fetchedMovies]
-          currentPage.value++
+          movies.value = [...movies.value, ...fetchedMovies];
+          currentPage.value++;
         } else {
-          hasMorePages.value = false
+          hasMorePages.value = false;
         }
       } catch (error) {
-        Logger.error('Error fetching movies:', error)
+        Logger.error("Error fetching movies:", error);
       } finally {
-        loading.value = false
+        loading.value = false;
       }
-    }
+    };
 
     const createObserver = () => {
-      if (!observerRef.value) return
+      if (!observerRef.value) return;
       const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          loadMovies()
+          loadMovies();
         }
-      })
-      observer.observe(observerRef.value)
+      });
+      observer.observe(observerRef.value);
 
       // Clean up observer when component is unmounted
       onUnmounted(() => {
-        observer.disconnect()
-      })
-    }
+        observer.disconnect();
+      });
+    };
 
     onMounted(() => {
-      loadMovies()
-      createObserver()
-    })
+      loadMovies();
+      createObserver();
+    });
 
-    return { movies, loading, observerRef }
+    return { movies, loading, observerRef };
   },
-})
+});
 </script>
 
 <style scoped>

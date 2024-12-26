@@ -14,7 +14,7 @@
         <router-link to="/wishlist">찜 목록</router-link>
       </nav>
     </div>
-    <div class="user-info" v-if="loggedIn">
+    <div v-if="loggedIn" class="user-info">
       <img :src="thumbnail" alt="Profile Thumbnail" class="profile-thumbnail" />
       <span>{{ nickname }}</span>
       <i class="fa-solid fa-arrow-right-from-bracket" @click="handleLogout"></i>
@@ -23,12 +23,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { defineComponent, computed, ref, watch } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'AppHeader',
+  name: "AppHeader",
   props: {
     isScrolled: {
       type: Boolean,
@@ -36,24 +36,24 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const router = useRouter()
+    const store = useStore();
+    const router = useRouter();
 
-    const userID = computed(() => store.getters.getUserID)
-    const nickname = computed(() => store.state.nickname)
-    const thumbnail = computed(() => store.state.thumbnail)
-    const loggedIn = computed(() => store.getters.isLoggedIn)
+    const userID = computed(() => store.getters.getUserID);
+    const nickname = computed(() => store.state.nickname);
+    const thumbnail = computed(() => store.state.thumbnail);
+    const loggedIn = computed(() => store.getters.isLoggedIn);
 
-    const menuActive = ref(false)
+    const menuActive = ref(false);
 
     const handleLogout = async () => {
-      await store.dispatch('logout')
-      router.push('/signin')
-    }
+      await store.dispatch("logout");
+      router.push("/signin");
+    };
 
     const toggleMenu = () => {
-      menuActive.value = !menuActive.value
-    }
+      menuActive.value = !menuActive.value;
+    };
 
     return {
       userID,
@@ -63,9 +63,9 @@ export default defineComponent({
       menuActive,
       handleLogout,
       toggleMenu,
-    }
+    };
   },
-})
+});
 </script>
 
 <style scoped>
