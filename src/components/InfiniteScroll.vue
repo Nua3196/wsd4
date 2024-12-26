@@ -4,11 +4,13 @@
       <MoviePoster v-for="movie in movies" :key="movie.id" :movie="movie" />
     </div>
     <div v-if="loading" class="loading-indicator">Loading...</div>
+    <!-- Observer Element -->
+    <div ref="observerRef" class="observer"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, watch } from 'vue'
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue'
 import MoviePoster from '@/components/MoviePoster.vue'
 import { fetchMoviesByCategory } from '@/services/api'
 import { Movie } from '@/types/movie'
@@ -27,6 +29,7 @@ export default defineComponent({
     const currentPage = ref(1)
     const loading = ref(false)
     const hasMorePages = ref(true)
+    const observerRef = ref<HTMLElement | null>(null)
 
     const loadMovies = async () => {
       if (loading.value || !hasMorePages.value) return
@@ -49,24 +52,27 @@ export default defineComponent({
       }
     }
 
-    const handleScroll = () => {
-      const scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop
-      const windowHeight = window.innerHeight
-      const scrollHeight =
-        document.documentElement.scrollHeight || document.body.scrollHeight
+    const createObserver = () => {
+      if (!observerRef.value) return
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          loadMovies()
+        }
+      })
+      observer.observe(observerRef.value)
 
-      if (scrollTop + windowHeight >= scrollHeight - 10) {
-        loadMovies()
-      }
+      // Clean up observer when component is unmounted
+      onUnmounted(() => {
+        observer.disconnect()
+      })
     }
 
     onMounted(() => {
       loadMovies()
-      window.addEventListener('scroll', handleScroll)
+      createObserver()
     })
 
-    return { movies, loading }
+    return { movies, loading, observerRef }
   },
 })
 </script>
@@ -85,5 +91,8 @@ export default defineComponent({
   font-size: 1.2rem;
   color: #888;
   margin-top: 20px;
+}
+.observer {
+  height: 1px;
 }
 </style>
