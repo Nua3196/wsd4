@@ -24,14 +24,13 @@ export default defineComponent({
     // 카카오 로그인 리다이렉트
     const redirectToKakaoLogin = () => {
       const clientId = process.env.VUE_APP_KAKAO_API_KEY; // .env에서 REST API 키 가져오기
-      Logger.info("API Key:", process.env.VUE_APP_TMDB_API_KEY);
       const scheme = process.env.VUE_APP_SCHEME;
       const host = process.env.VUE_IP_ADDRESS;
-      Logger.info("Host:", host)
+      Logger.info("Host:", process.env.VUE_APP_IP_ADDRESS);
       const port = process.env.VUE_APP_PORT;
-      Logger.info("Port:", port)
+      Logger.info("Port:", process.env.VUE_APP_PORT);
       const redirectUri = `${scheme}://${host}:${port}/oauth`; // Redirect URI 동적으로 구성
-      Logger.info("redirectUri:", redirectUri)
+      Logger.info("redirectUri:", redirectUri);
       const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&prompt=login&response_type=code`;
       window.location.href = kakaoAuthUrl; // 카카오 로그인 페이지로 리다이렉트
     };
