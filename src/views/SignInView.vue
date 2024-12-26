@@ -26,7 +26,7 @@ export default defineComponent({
       const clientId = process.env.VUE_APP_KAKAO_API_KEY; // .env에서 REST API 키 가져오기
       const scheme = process.env.VUE_APP_SCHEME;
       const host = process.env.VUE_IP_ADDRESS;
-      console.log("Host:", process.env.VUE_APP_IP_ADDRESS);
+      Logger.info("Host:", process.env.VUE_APP_IP_ADDRESS);
       const port = process.env.VUE_APP_PORT;
       Logger.info("Port:", process.env.VUE_APP_PORT);
       const redirectUri = `${scheme}://${host}:${port}/oauth`; // Redirect URI 동적으로 구성
